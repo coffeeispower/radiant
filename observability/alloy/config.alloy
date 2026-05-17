@@ -1,0 +1,59 @@
+otelcol.receiver.otlp "radiant" {
+  grpc {
+    endpoint = "0.0.0.0:4317"
+  }
+
+  http {
+    endpoint = "0.0.0.0:4318"
+  }
+
+  output {
+    traces  = [otelcol.processor.batch.radiant.input]
+    logs    = [otelcol.processor.batch.radiant.input]
+    metrics = [otelcol.processor.batch.radiant.input]
+  }
+}
+
+otelcol.processor.batch "radiant" {
+  output {
+    traces  = [otelcol.exporter.otlp.tempo.input]
+    logs    = [otelcol.exporter.loki.radiant.input]
+    metrics = [otelcol.exporter.prometheus.radiant.input]
+  }
+}
+
+otelcol.exporter.otlp "tempo" {
+  client {
+    endpoint = "tempo:4317"
+    tls {
+      insecure = true
+    }
+  }
+}
+
+otelcol.exporter.loki "radiant" {
+  forward_to = [loki.write.radiant.receiver]
+}
+
+loki.write "radiant" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+}
+
+otelcol.exporter.prometheus "radiant" {
+  forward_to = [prometheus.remote_write.radiant.receiver]
+}
+
+prometheus.remote_write "radiant" {
+  endpoint {
+    url = "http://prometheus:9090/api/v1/write"
+  }
+}
+
+prometheus.exporter.self "alloy" {}
+
+prometheus.scrape "alloy" {
+  targets    = prometheus.exporter.self.alloy.targets
+  forward_to = [prometheus.remote_write.radiant.receiver]
+}
