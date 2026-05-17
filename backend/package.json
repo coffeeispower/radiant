@@ -38,6 +38,7 @@
 	"dependencies": {
 		"@breezystack/lamejs": "^1.2.7",
 		"@effect/platform": "^0.94.5",
+		"@effect/platform-bun": "^0.89.0",
 		"@radiant/client": "workspace:*",
 		"arctic": "^3.7.0",
 		"drizzle-orm": "^0.45.1",

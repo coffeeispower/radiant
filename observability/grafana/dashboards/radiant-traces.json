@@ -1,0 +1,104 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [
+    {
+      "title": "Open Tempo Explore",
+      "type": "link",
+      "url": "/explore?schemaVersion=1&panes={\"now\":{\"datasource\":\"tempo\",\"queries\":[{\"queryType\":\"search\",\"refId\":\"A\"}],\"range\":{\"from\":\"now-15m\",\"to\":\"now\"}}}&orgId=1"
+    }
+  ],
+  "panels": [
+    {
+      "datasource": {
+        "type": "tempo",
+        "uid": "tempo"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "content": "Tempo funciona melhor no Explore para pesquisa de spans. Usa o link acima e procura spans como `RadioStream.startRadio`, `PlayoutManager.syncNow`, `RadioManager.getStream` ou `radio.listen`.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "12.0.2",
+      "title": "Trace Workflow",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 2,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": true,
+        "showCommonLabels": true,
+        "showLabels": true,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "{service_name=\"radiant-backend\"} | trace_id != \"\"",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs With Trace IDs",
+      "type": "logs"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 41,
+  "tags": [
+    "radiant",
+    "traces"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Radiant Traces",
+  "uid": "radiant-traces",
+  "version": 1,
+  "weekStart": ""
+}

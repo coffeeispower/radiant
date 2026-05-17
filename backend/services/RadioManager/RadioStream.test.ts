@@ -1,5 +1,5 @@
 import { describe, expect } from "bun:test"
-import { Chunk, Effect, Fiber, Layer, Ref, Stream, TestClock } from "effect"
+import { Chunk, Effect, Fiber, Layer, Metric, Ref, Stream, TestClock } from "effect"
 import type { Radio } from "../../lib"
 import * as AudioSource from "../../lib/AudioSource"
 import { IcyEncoder as IcyEncoderService } from "../IcyEncoder"
@@ -7,6 +7,7 @@ import { PlayoutManager } from "../PlayoutManager"
 import { it } from "../../bun-test-effect"
 import { AudioMultiplexer } from "../AudioMultiplexer"
 import { RadioManagerConfig } from "./RadioManagerConfig"
+import { radioListenerConnectionsActive, radioMetric } from "./metrics"
 import * as RadioStream from "./RadioStream"
 
 const FRAME_SAMPLES = 1152
@@ -230,6 +231,42 @@ describe("RadioStream", () => {
 			expect(markers[FRAME_BUFFER_CAPACITY - 1]).toBe(FRAME_BUFFER_CAPACITY - 1)
 			expect(markers[FRAME_BUFFER_CAPACITY]).toBe(FRAME_BUFFER_CAPACITY)
 			expect(markers[FRAME_BUFFER_CAPACITY + 1]).toBe(FRAME_BUFFER_CAPACITY + 1)
+		}),
+	)
+
+	it.scoped("interrupting cloneStream releases the subscriber and decrements active listeners", () =>
+		Effect.gen(function* () {
+			const radioId = "radio_1" as Radio.RadioId
+			const multiplexer = yield* makeSequentialFakeMultiplexer()
+			const runtime = yield* RadioStream.makeRuntime(multiplexer, { radioId })
+
+			const encoded = yield* RadioStream.cloneStream(
+				{
+					radioId,
+					multiplexer,
+					runtime,
+					playoutManagerFiber: undefined as never,
+				} as never,
+				{ kbps: 128 },
+			).pipe(Effect.provide(makeFakeIcyEncoderLayer()))
+
+			const streamFiber = yield* Effect.fork(
+				Stream.runDrain(Stream.take(encoded.stream, 10_000)),
+			)
+
+			yield* TestClock.adjust(FRAME_DURATION_MS * 2)
+
+			const activeBeforeInterrupt = yield* Metric.value(
+				radioMetric(radioListenerConnectionsActive, radioId),
+			)
+			expect(activeBeforeInterrupt.value).toBe(1)
+
+			yield* Fiber.interrupt(streamFiber)
+
+			const activeAfterInterrupt = yield* Metric.value(
+				radioMetric(radioListenerConnectionsActive, radioId),
+			)
+			expect(activeAfterInterrupt.value).toBe(0)
 		}),
 	)
 

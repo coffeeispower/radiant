@@ -9,6 +9,7 @@ import {
 	radioListenerConnectionsActive,
 	radioListenerConnectionsTotal,
 	radioMetric,
+	radioStreamsActive,
 	radioStartsTotal,
 	radioStreamClonesTotal,
 } from "./metrics"
@@ -433,6 +434,7 @@ const startRadio = Effect.fn("RadioStream.startRadio")(function* (radioId: Radio
 		}),
 	)
 	yield* Metric.increment(radioMetric(radioStartsTotal, radioId))
+	yield* Metric.increment(radioStreamsActive)
 
 	return new RadioStream({
 		radioId,
@@ -473,6 +475,7 @@ const cloneStream = (self: RadioStream, options: { kbps: number; title?: string 
 	)
 const stop = (self: RadioStream) =>
 	Fiber.interrupt(self.playoutManagerFiber).pipe(
+		Effect.zipLeft(Metric.incrementBy(radioStreamsActive, -1)),
 		Effect.tap(() =>
 			Effect.logInfo("radio_stream.stopped").pipe(Effect.annotateLogs({ radioId: self.radioId })),
 		),

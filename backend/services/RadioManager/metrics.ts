@@ -20,6 +20,10 @@ export const radioListenerConnectionsActive = Metric.gauge("radio_listener_conne
 	description: "Current number of active listener HTTP connections",
 })
 
+export const radioStreamsActive = Metric.gauge("radio_streams_active", {
+	description: "Current number of active radio runtimes",
+})
+
 export const radioPlayoutSyncsTotal = Metric.counter("radio_playout_syncs_total", {
 	description: "Number of playout syncs applied to radios",
 	incremental: true,

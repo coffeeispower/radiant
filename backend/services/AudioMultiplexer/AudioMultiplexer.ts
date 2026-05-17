@@ -14,7 +14,6 @@ import {
 	MultiplexerInvalidMasterVolumeError,
 } from "./Error"
 import * as internal from "./internal"
-import { radioMultiplexerSetClusterTotal } from "../RadioManager/metrics"
 import {
 	createRuntimeCluster,
 	crossfadeSamples,
@@ -73,7 +72,6 @@ export class AudioMultiplexer extends Effect.Service<AudioMultiplexer>()("AudioM
 								: Duration.toMillis(options.crossfadeDuration),
 					}),
 				)
-				yield* Metric.increment(radioMultiplexerSetClusterTotal)
 
 				const offered = yield* Queue.offer(
 					commandQueue,

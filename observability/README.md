@@ -54,6 +54,16 @@ Alloy then forwards:
    - `Loki` for logs
    - `Prometheus` for metrics
 
+### Provisioned Dashboards
+
+Grafana now provisions a `Radiant` folder with:
+
+- `Radiant Overview`
+- `Radiant Logs`
+- `Radiant Traces`
+
+These are a faster starting point than building everything manually in `Explore`.
+
 ### Good first checks
 
 #### Traces
