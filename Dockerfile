@@ -15,4 +15,4 @@ RUN bun install
 RUN bun run build
 RUN env > radiant-frontend/.env
 EXPOSE 8080
-CMD ["bash", "-c", "bun run discloud:start"]
+CMD ["bash", "-c", "echo aaa && bun run discloud:start"]
