@@ -1,0 +1,3 @@
+const TICKS_SPACING_MIN_EM = 4;
+
+

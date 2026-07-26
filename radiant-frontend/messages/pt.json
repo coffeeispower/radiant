@@ -83,8 +83,8 @@
 		"description": "Esta área vai concentrar configuração da conta, preferências do dashboard e opções da estação."
 	},
 	"radio": {
+		"schedule": "Horário",
 		"nav": {
-			"schedule": "Grelha",
 			"settings": "Definições da rádio"
 		}
 	},

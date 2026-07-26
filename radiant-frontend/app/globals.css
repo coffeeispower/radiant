@@ -175,3 +175,8 @@ a {
 img {
 	user-select: none;
 }
+
+
+#__scrollAreaViewportPatch__ > div > div {
+	min-height: 100%;
+}

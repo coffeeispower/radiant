@@ -83,8 +83,8 @@
 		"description": "This area will hold account configuration, dashboard preferences and station options."
 	},
 	"radio": {
+		"schedule": "Schedule",
 		"nav": {
-			"schedule": "Schedule",
 			"settings": "Radio settings"
 		}
 	},
