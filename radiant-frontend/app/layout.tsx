@@ -5,6 +5,7 @@ import "./globals.css"
 import { RadiantAtomsProvider } from "./lib/atoms/RadiantAtomsProvider"
 import { groteskFont } from "./lib/fonts"
 import { isLocale } from "./lib/i18n"
+import StyledComponentsRegistry from "./lib/styledComponentsRegistry"
 
 export const metadata: Metadata = {
 	title: "Radiant",
@@ -26,11 +27,13 @@ export default async function RootLayout({
 	return (
 		<html lang={appLocale} className={`${groteskFont.variable} h-full antialiased`}>
 			<body className="min-h-full flex flex-col">
-				<NextIntlClientProvider locale={appLocale} messages={messages}>
-					<RadiantAtomsProvider locale={appLocale}>
-						{children}
-					</RadiantAtomsProvider>
-				</NextIntlClientProvider>
+				<StyledComponentsRegistry>
+					<NextIntlClientProvider locale={appLocale} messages={messages}>
+						<RadiantAtomsProvider locale={appLocale}>
+							{children}
+						</RadiantAtomsProvider>
+					</NextIntlClientProvider>
+				</StyledComponentsRegistry>
 			</body>
 		</html>
 	)

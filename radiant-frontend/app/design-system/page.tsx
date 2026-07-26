@@ -1,7 +1,7 @@
 "use client"
 
 import { notFound } from "next/navigation"
-import matsuriCover from "../assets/まつり-foto.png"
+import matsuriCover from "../assets/matsuri-foto.png"
 import { HealthPanel } from "../components/design-system/HealthPanel"
 import { LibrarySnapshotPanel } from "../components/design-system/LibrarySnapshotPanel"
 import { PageHeader } from "../components/design-system/PageHeader"

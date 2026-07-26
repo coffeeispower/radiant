@@ -3,7 +3,7 @@
 import { getTranslations } from "next-intl/server"
 import { Option } from "effect"
 import { PropsWithChildren } from "react"
-import matsuriCover from "./assets/まつり-foto.png"
+import matsuriCover from "./assets/matsuri-foto.png"
 import { RadiantLogo } from "./components/RadiantLogo"
 import { PreviewCard } from "./components/design-system/PreviewCard"
 import { FeatureStatsRow } from "./components/home/FeatureStatsRow"

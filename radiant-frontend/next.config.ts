@@ -4,6 +4,9 @@ import createNextIntlPlugin from "next-intl/plugin"
 const nextConfig: NextConfig = {
 	reactCompiler: true,
 	transpilePackages: ["@radiant/backend", "@radiant/client"],
+	compiler: {
+		styledComponents: true
+	}
 }
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts")
