@@ -135,7 +135,7 @@ export function useMediaLibraryMutations(radioId: Radio.RadioId) {
 			return uploadFileMutate({
 				payload: formData,
 				path: { radioId },
-				urlParams: { name: file.name, parentId: parentId ?? undefined },
+				urlParams: { parentId: parentId ?? undefined },
 				reactivityKeys: [treeKey],
 			})
 		},

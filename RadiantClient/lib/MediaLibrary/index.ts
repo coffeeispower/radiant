@@ -123,13 +123,12 @@ export const MoveNodeInput = Schema.Struct({
 export type MoveNodeInput = typeof MoveNodeInput.Type
 
 export const UploadFileUrlParams = Schema.Struct({
-	name: MediaLibraryNodeName,
 	parentId: Schema.optional(MediaNode.MediaNodeId),
 })
 export type UploadFileUrlParams = typeof UploadFileUrlParams.Type
 
 export const UploadFilePayload = HttpApiSchema.Multipart(Schema.Struct({
-	file: Multipart.SingleFileSchema,
+	file: Multipart.FileSchema,
 }))
 export type UploadFilePayload = typeof UploadFilePayload.Type
 

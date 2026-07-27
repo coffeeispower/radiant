@@ -40,7 +40,7 @@ export const mediaLibraryGroupLive = HttpApiBuilder.group(
 					return yield* mediaLibrary.uploadAudioFile({
 						radioId,
 						parentId: urlParams.parentId ?? null,
-						name: urlParams.name,
+						name: payload.file.name,
 						contentType: payload.file.contentType,
 						content,
 					})
