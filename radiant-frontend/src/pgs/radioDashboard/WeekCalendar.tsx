@@ -1,6 +1,6 @@
 "use client"
 import { DateTime, Option } from "effect";
-import { PropsWithoutRef, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { PropsWithoutRef, useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/Card";
 import { ScrollArea } from "@/components/ScrollArea";
 import { Spinner } from "@/components/Spinner";
@@ -63,8 +63,14 @@ export function WeekCalendar(props: PropsWithoutRef<{radioAtom: GetRadioAtom, cl
 		const rows = Array.from(timeSpanEls).map((el) => ({ top: el.offsetTop, height: el.offsetHeight }));
 		const cols = Array.from(dayColEls).map((el) => ({ left: el.offsetLeft, width: el.offsetWidth }));
 
-		setRowMeasurements(rows);
-		setColMeasurements(cols);
+		setRowMeasurements((prev) => {
+			if (prev.length === rows.length && prev.every((r, i) => r.top === rows[i]!.top && r.height === rows[i]!.height)) return prev;
+			return rows;
+		});
+		setColMeasurements((prev) => {
+			if (prev.length === cols.length && prev.every((c, i) => c.left === cols[i]!.left && c.width === cols[i]!.width)) return prev;
+			return cols;
+		});
 	}, []);
 
 	const zoomAnchorRef = useRef<{ scrollTop: number; mouseY: number; headerHeight: number; oldPPM: number } | null>(null);
@@ -98,11 +104,12 @@ export function WeekCalendar(props: PropsWithoutRef<{radioAtom: GetRadioAtom, cl
 			};
 			viewport.addEventListener("wheel", handleWheel, { passive: false });
 			wheelCleanupRef.current = () => viewport.removeEventListener("wheel", handleWheel);
+			measureGrid();
 		}
-	}, []);
+	}, [measureGrid]);
 
 	useLayoutEffect(() => {
-		if (calendarViewportSize.pass >= 2 && zoomAnchorRef.current) {
+		if (zoomAnchorRef.current) {
 			const { scrollTop, mouseY, headerHeight, oldPPM } = zoomAnchorRef.current;
 			const f = pixelsPerMinute / oldPPM;
 			const newScrollTop = f * scrollTop + (f - 1) * (mouseY - headerHeight);
@@ -112,13 +119,11 @@ export function WeekCalendar(props: PropsWithoutRef<{radioAtom: GetRadioAtom, cl
 			}
 			zoomAnchorRef.current = null;
 		}
-	}, [calendarViewportSize.pass, calendarViewportSize.width, calendarViewportSize.height, pixelsPerMinute]);
+	}, [pixelsPerMinute]);
 
-	useEffect(() => {
-		if (calendarViewportSize.pass >= 2) {
-			measureGrid();
-		}
-	}, [calendarViewportSize.pass, calendarViewportSize.width, calendarViewportSize.height, measureGrid]);
+	useLayoutEffect(() => {
+		measureGrid();
+	}, [pixelsPerMinute, measureGrid]);
 
 	if(radio._tag != "Success") return (
 		<Card className={cn("flex flex-col", props.className)}>
