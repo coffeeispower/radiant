@@ -34,7 +34,7 @@ export function WeekCalendar(props: PropsWithoutRef<{radioAtom: GetRadioAtom, cl
 
 	const timezone = radio._tag === "Success" ? radio.value.timezone : "UTC";
 
-	const currentWeek = DateTime.setZone(DateTime.unsafeNow(), DateTime.zoneUnsafeMakeNamed(timezone));
+	const currentWeek = useMemo(() => DateTime.setZone(DateTime.unsafeNow(), DateTime.zoneUnsafeMakeNamed(timezone)), [timezone]);
 	const weekInfo = makeWeekInfo(currentWeek);
 
 	const rangeStart = useMemo(() => new Date(DateTime.toEpochMillis(weekInfo.weekStart)).toISOString(), [weekInfo.weekStart]);
