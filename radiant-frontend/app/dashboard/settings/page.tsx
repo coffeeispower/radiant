@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 
-import { groteskFont, tomorrowFont } from "../../lib/fonts"
+import { groteskFont, tomorrowFont } from "@/lib/fonts"
 
 export default async function DashboardSettingsPage() {
 	const t = await getTranslations("dashboardSettings")

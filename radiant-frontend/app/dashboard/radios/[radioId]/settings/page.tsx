@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 
-import { groteskFont, tomorrowFont } from "../../../../lib/fonts"
+import { groteskFont, tomorrowFont } from "@/lib/fonts"
 
 type RadioSettingsPageProps = {
 	params: Promise<{

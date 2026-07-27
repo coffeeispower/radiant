@@ -1,11 +1,11 @@
 import type { Metadata } from "next"
-import { NextIntlClientProvider } from "next-intl"
-import { getLocale, getMessages } from "next-intl/server"
+import { NextIntlClientProvider, useLocale, useMessages } from "next-intl"
+import { getMessages } from "next-intl/server"
 import "./globals.css"
-import { RadiantAtomsProvider } from "./lib/atoms/RadiantAtomsProvider"
-import { groteskFont } from "./lib/fonts"
-import { isLocale } from "./lib/i18n"
-import StyledComponentsRegistry from "./lib/styledComponentsRegistry"
+import { RadiantAtomsProvider } from "@/context/RadiantAtomsProvider"
+import { groteskFont } from "@/lib/fonts"
+import { isLocale } from "@/lib/i18n"
+import StyledComponentsRegistry from "@/lib/styledComponentsRegistry"
 
 export const metadata: Metadata = {
 	title: "Radiant",
@@ -18,18 +18,14 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode
 }>) {
-	const [locale, messages] = await Promise.all([
-		getLocale(),
-		getMessages(),
-	])
-	const appLocale = isLocale(locale) ? locale : "pt"
+	const messages = await getMessages()
 
 	return (
-		<html lang={appLocale} className={`${groteskFont.variable} h-full antialiased`}>
+		<html className={`${groteskFont.variable} h-full antialiased`}>
 			<body className="min-h-full flex flex-col">
 				<StyledComponentsRegistry>
-					<NextIntlClientProvider locale={appLocale} messages={messages}>
-						<RadiantAtomsProvider locale={appLocale}>
+					<NextIntlClientProvider messages={messages}>
+						<RadiantAtomsProvider>
 							{children}
 						</RadiantAtomsProvider>
 					</NextIntlClientProvider>

@@ -1,22 +1,17 @@
 "use client"
 
 import { notFound } from "next/navigation"
-import matsuriCover from "../assets/matsuri-foto.png"
-import { HealthPanel } from "../components/design-system/HealthPanel"
-import { LibrarySnapshotPanel } from "../components/design-system/LibrarySnapshotPanel"
-import { PageHeader } from "../components/design-system/PageHeader"
-import { Panel } from "../components/design-system/Panel"
-import { PanelGrid } from "../components/design-system/PanelGrid"
-import { PreviewCard } from "../components/design-system/PreviewCard"
-import { QuickActionsPanel } from "../components/design-system/QuickActionsPanel"
-import { ScheduleMiniPanel } from "../components/design-system/ScheduleMiniPanel"
-import { StatusPill } from "../components/design-system/StatusPill"
-import { UpcomingPanel } from "../components/design-system/UpcomingPanel"
-import { RadiantLogo } from "../components/RadiantLogo"
-import { Badge } from "../components/ui/Badge"
-import { Button } from "../components/ui/Button"
-import { Card } from "../components/ui/Card"
-import { Checkbox } from "../components/ui/Checkbox"
+import matsuriCover from "@/assets/matsuri-foto.png"
+import { PageHeader } from "@/components/PageHeader"
+import { Panel } from "@/components/Panel"
+import { PanelGrid } from "@/components/PanelGrid"
+import { PreviewCard } from "@/components/PreviewCard"
+import { StatusPill } from "@/components/StatusPill"
+import { RadiantLogo } from "@/components/RadiantLogo"
+import { Badge } from "@/components/Badge"
+import { Button } from "@/components/Button"
+import { Card } from "@/components/Card"
+import { Checkbox } from "@/components/Checkbox"
 import {
 	Dialog,
 	DialogContent,
@@ -25,7 +20,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "../components/ui/Dialog"
+} from "@/components/Dialog"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -33,12 +28,12 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "../components/ui/DropdownMenu"
-import { EmptyState } from "../components/ui/EmptyState"
-import { Input } from "../components/ui/Input"
-import { Label } from "../components/ui/label"
-import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/Popover"
-import { ScrollArea } from "../components/ui/ScrollArea"
+} from "@/components/DropdownMenu"
+import { EmptyState } from "@/components/EmptyState"
+import { Input } from "@/components/Input"
+import { Label } from "@/components/label"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover"
+import { ScrollArea } from "@/components/ScrollArea"
 import {
 	Select,
 	SelectContent,
@@ -48,16 +43,16 @@ import {
 	SelectSeparator,
 	SelectTrigger,
 	SelectValue,
-} from "../components/ui/Select"
-import { Separator } from "../components/ui/Separator"
-import { Skeleton } from "../components/ui/Skeleton"
-import { StatCard } from "../components/ui/StatCard"
-import { Switch } from "../components/ui/Switch"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/Tabs"
-import { Textarea } from "../components/ui/Textarea"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../components/ui/Tooltip"
-import { VerticalSlider } from "../components/ui/VerticalSlider"
-import { groteskFont, tomorrowFont } from "../lib/fonts"
+} from "@/components/Select"
+import { Separator } from "@/components/Separator"
+import { Skeleton } from "@/components/Skeleton"
+import { StatCard } from "@/components/StatCard"
+import { Switch } from "@/components/Switch"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/Tabs"
+import { Textarea } from "@/components/Textarea"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/Tooltip"
+import { VerticalSlider } from "@/components/VerticalSlider"
+import { groteskFont, tomorrowFont } from "@/lib/fonts"
 
 const isDesignSystemEnabled = process.env.NEXT_PUBLIC_ENABLE_DESIGN_SYSTEM === "true"
 
@@ -346,7 +341,7 @@ export default function DesignSystemPage() {
 							description="These are the real product panels that the overview dashboard is already built from."
 						/>
 						<PanelGrid>
-							<div className="lg:col-span-8">
+							<div className="lg:col-span-12">
 								<PreviewCard
 									cover={matsuriCover}
 									coverAlt="Matsuri cover art"
@@ -360,11 +355,6 @@ export default function DesignSystemPage() {
 									isLive
 								/>
 							</div>
-							<HealthPanel />
-							<ScheduleMiniPanel />
-							<UpcomingPanel />
-							<LibrarySnapshotPanel />
-							<QuickActionsPanel />
 						</PanelGrid>
 					</div>
 				</div>
