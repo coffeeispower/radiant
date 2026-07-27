@@ -1,8 +1,9 @@
 "use client"
 import { DateTime, Option } from "effect";
-import { JSX, PropsWithoutRef, useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { PropsWithoutRef, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/Card";
 import { ScrollArea } from "@/components/ScrollArea";
+import { Spinner } from "@/components/Spinner";
 import { useTranslations } from "next-intl";
 import { Radio } from "@radiant/client";
 import { GetRadioAtom, useGenerateScheduleBlocksAtom } from "@/context/radiantClient";
@@ -35,6 +36,7 @@ export function WeekCalendar(props: PropsWithoutRef<{radioAtom: GetRadioAtom, cl
 
 	const scheduleBlocksAtom = useGenerateScheduleBlocksAtom(radio._tag === "Success" ? radio.value.id : ("radio_placeholder" as Radio.RadioId), rangeStart, rangeEnd);
 	const scheduleBlocks = useAtomValue(scheduleBlocksAtom);
+
 
 	const days = useMemo(() => {
 		const result: { date: Time; dayIndex: number }[] = []
@@ -100,23 +102,36 @@ export function WeekCalendar(props: PropsWithoutRef<{radioAtom: GetRadioAtom, cl
 	}, []);
 
 	useLayoutEffect(() => {
+		if (calendarViewportSize.pass >= 2 && zoomAnchorRef.current) {
+			const { scrollTop, mouseY, headerHeight, oldPPM } = zoomAnchorRef.current;
+			const f = pixelsPerMinute / oldPPM;
+			const newScrollTop = f * scrollTop + (f - 1) * (mouseY - headerHeight);
+			const viewport = calendarViewportSize.ref.current;
+			if (viewport) {
+				viewport.scrollTop = Math.max(0, newScrollTop);
+			}
+			zoomAnchorRef.current = null;
+		}
+	}, [calendarViewportSize.pass, calendarViewportSize.width, calendarViewportSize.height, pixelsPerMinute]);
+
+	useEffect(() => {
 		if (calendarViewportSize.pass >= 2) {
 			measureGrid();
-
-			if (zoomAnchorRef.current) {
-				const { scrollTop, mouseY, headerHeight, oldPPM } = zoomAnchorRef.current;
-				const f = pixelsPerMinute / oldPPM;
-				const newScrollTop = f * scrollTop + (f - 1) * (mouseY - headerHeight);
-				const viewport = calendarViewportSize.ref.current;
-				if (viewport) {
-					viewport.scrollTop = Math.max(0, newScrollTop);
-				}
-				zoomAnchorRef.current = null;
-			}
 		}
-	}, [calendarViewportSize.pass, calendarViewportSize.width, calendarViewportSize.height, measureGrid, pixelsPerMinute]);
+	}, [calendarViewportSize.pass, calendarViewportSize.width, calendarViewportSize.height, measureGrid]);
 
-	if(radio._tag != "Success") return;
+	if(radio._tag != "Success") return (
+		<Card className={cn("flex flex-col", props.className)}>
+			<CardHeader className="px-4 py-2 flex flex-row items-center justify-between">
+				<CardTitle className={`font-sans font-semibold ${tomorrowFont.className}`}>{t("Schedule")}</CardTitle>
+			</CardHeader>
+			<CardContent className="flex-1 min-h-0 border-t-3">
+				<div className="flex items-center justify-center py-12">
+					<Spinner className="text-lg text-black/40" />
+				</div>
+			</CardContent>
+		</Card>
+	);
 
 	let displayDayDuration = 24;
 	if(Option.isSome(weekInfo.dstSkipPoint)) {
@@ -137,32 +152,44 @@ export function WeekCalendar(props: PropsWithoutRef<{radioAtom: GetRadioAtom, cl
 				</span>
 			</CardHeader>
 			<CardContent className="flex-1 min-h-0 border-t-3">
-				<ScrollArea ref={setScrollAreaRef} className="h-full">
-					<div className="relative">
-						{calendarViewportSize.pass >= 2 && (
-							<TimeSpanGrid
-								week={weekInfo}
-								displayDayDuration={displayDayDuration}
-								tickCount={tickCount}
-								rowHeight={rowHeight}
-								days={days}
-								gridRef={gridRef}
-							/>
-						)}
-						{calendarViewportSize.pass >= 2 && scheduleBlocks._tag === "Success" && (
-							<BlockOverlay
-								week={weekInfo}
-								weeklyRules={scheduleBlocks.value.weekly.rules}
-								weeklyOccurrences={scheduleBlocks.value.weekly.occurrences}
-								oneOffBlocks={scheduleBlocks.value.oneOff.items}
-								timezone={radio.value.timezone}
-								displayDayDuration={displayDayDuration}
-								rowMeasurements={rowMeasurements}
-								colMeasurements={colMeasurements}
-							/>
-						)}
+				{scheduleBlocks._tag === "Initial" ? (
+					<div className="flex items-center justify-center py-12">
+						<Spinner className="text-lg text-black/40" />
 					</div>
-				</ScrollArea>
+				) : scheduleBlocks._tag === "Success" ? (
+					<ScrollArea ref={setScrollAreaRef} className="h-full">
+						<div className="relative">
+							<TimeSpanGrid
+									week={weekInfo}
+									displayDayDuration={displayDayDuration}
+									tickCount={tickCount}
+									rowHeight={rowHeight}
+									days={days}
+									gridRef={gridRef}
+								/>
+							<BlockOverlay
+									week={weekInfo}
+									weeklyRules={scheduleBlocks.value.weekly.rules}
+									weeklyOccurrences={scheduleBlocks.value.weekly.occurrences}
+									oneOffBlocks={scheduleBlocks.value.oneOff.items}
+									timezone={radio.value.timezone}
+									displayDayDuration={displayDayDuration}
+									rowMeasurements={rowMeasurements}
+									colMeasurements={colMeasurements}
+								/>
+						</div>
+					</ScrollArea>
+				) : (
+					<div className="flex flex-col items-center justify-center py-12 text-center">
+						<p className="text-sm font-bold text-black/60">Failed to load schedule</p>
+						<button
+							className="mt-2 text-sm font-bold text-signal-warm hover:underline"
+							onClick={() => window.location.reload()}
+						>
+							Retry
+						</button>
+					</div>
+				)}
 			</CardContent>
 		</Card>
 	)

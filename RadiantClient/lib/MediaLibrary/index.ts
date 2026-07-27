@@ -1,4 +1,4 @@
-import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema } from "@effect/platform"
+import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, Multipart } from "@effect/platform"
 import { Schema } from "effect"
 
 import { Authorization } from "../Auth"
@@ -128,6 +128,11 @@ export const UploadFileUrlParams = Schema.Struct({
 })
 export type UploadFileUrlParams = typeof UploadFileUrlParams.Type
 
+export const UploadFilePayload = HttpApiSchema.Multipart(Schema.Struct({
+	file: Multipart.FileSchema,
+}))
+export type UploadFilePayload = typeof UploadFilePayload.Type
+
 export const mediaLibraryGroup = HttpApiGroup.make("mediaLibrary")
 	.add(
 		HttpApiEndpoint.get("getTree")`/radios/${RadioIdParam}/media-library/tree`
@@ -138,8 +143,9 @@ export const mediaLibraryGroup = HttpApiGroup.make("mediaLibrary")
 			.middleware(Authorization),
 	)
 	.add(
-		HttpApiEndpoint.post("uploadFile")`/radios/${RadioIdParam}/media-library/files`
+			HttpApiEndpoint.post("uploadFile")`/radios/${RadioIdParam}/media-library/files`
 			.setUrlParams(UploadFileUrlParams)
+			.setPayload(UploadFilePayload)
 			.addSuccess(MediaNode.MediaNode)
 			.addError(MediaLibraryNodeNotFoundError)
 			.addError(MediaLibraryNameConflictError)

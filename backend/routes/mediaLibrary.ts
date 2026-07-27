@@ -1,7 +1,7 @@
-import { HttpApiBuilder, HttpServerRequest, HttpServerResponse } from "@effect/platform"
+import { FileSystem, HttpApiBuilder, HttpServerResponse } from "@effect/platform"
 import * as RadiantClient from "@radiant/client"
 import { CurrentUser } from "@radiant/client/contract"
-import { Effect } from "effect"
+import { Effect, Stream } from "effect"
 
 import { RadioManager } from "../services"
 import { MediaLibraryService } from "../services/MediaLibraryService"
@@ -30,18 +30,19 @@ export const mediaLibraryGroupLive = HttpApiBuilder.group(
 			)
 			.handle(
 				"uploadFile",
-				Effect.fn("http.mediaLibrary.uploadFile")(function* ({ path: { radioId }, urlParams }) {
+				Effect.fn("http.mediaLibrary.uploadFile")(function* ({ path: { radioId }, urlParams, payload }) {
 					yield* ensureRadioOwner(radioId)
 
 					const mediaLibrary = yield* MediaLibraryService
-					const request = yield* HttpServerRequest.HttpServerRequest
+					const fs = yield* FileSystem.FileSystem
+					const content = Stream.fromEffect(fs.readFile(payload.file.path))
 
 					return yield* mediaLibrary.uploadAudioFile({
 						radioId,
 						parentId: urlParams.parentId ?? null,
 						name: urlParams.name,
-						contentType: request.headers["content-type"],
-						content: request.stream,
+						contentType: payload.file.contentType,
+						content,
 					})
 				}),
 			)

@@ -1,12 +1,13 @@
 "use client"
 
-import { PropsWithoutRef, useMemo } from "react";
+import { PropsWithoutRef } from "react";
 import { useGenerateGetRadioAtom } from "@/context/radiantClient";
 import { Radio } from "@radiant/client";
+import { MediaLibrary } from "./MediaLibrary";
 import { WeekCalendar } from "./WeekCalendar";
+import { DashboardLoadingScreen } from "./DashboardLoadingScreen";
 import styled from "styled-components";
-import { Atom, Result } from "@effect-atom/atom-react";
-import { constant } from "effect/Function";
+import { useAtomValue } from "@effect-atom/atom-react";
 
 const GridLayout = styled.div`
 	display: grid;
@@ -23,9 +24,15 @@ const GridLayout = styled.div`
 	position: absolute;
 `;
 export function RadioManagementDashboardRoot(props: PropsWithoutRef<{initialRadio: Radio.RadioInfo}>) {
-	const radioAtom = useGenerateGetRadioAtom(props.initialRadio.id).pipe(Atom.withServerValue(constant(Result.success(props.initialRadio))));
+	const radioAtom = useGenerateGetRadioAtom(props.initialRadio.id);
+	const radio = useAtomValue(radioAtom);
+
+	if (radio._tag !== "Success") {
+		return <DashboardLoadingScreen className="absolute inset-0 bg-canvas" />;
+	}
+
 	return <GridLayout>
 		<WeekCalendar radioAtom={radioAtom} className="[grid-area:A] bg-surface"/>
-
+		<MediaLibrary radioId={props.initialRadio.id} className="[grid-area:B]"/>
 	</GridLayout>
 }
