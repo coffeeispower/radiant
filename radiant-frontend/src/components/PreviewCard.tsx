@@ -1,4 +1,5 @@
 import { StaticImageData } from "next/image"
+import { useTranslations } from "next-intl"
 
 import { groteskFont, tomorrowFont } from "@/lib/fonts"
 import { cn } from "@/utils/cn"
@@ -51,8 +52,9 @@ function MetaBox(props: {
 }
 
 export function PreviewCard(props: PreviewCardData) {
+	const t = useTranslations()
 	const isLive = props.isLive ?? true
-	const statusLabel = props.statusLabel ?? (isLive ? "Live" : "Off air")
+	const statusLabel = props.statusLabel ?? (isLive ? t("Live") : t("Off air"))
 
 	return (
 		<Card className="bg-white p-5 text-neo-black shadow-neo-panel sm:p-6">
@@ -61,12 +63,12 @@ export function PreviewCard(props: PreviewCardData) {
 					<p
 						className={`text-[10px] font-extrabold uppercase tracking-[0.26em] text-black/55 ${groteskFont.className}`}
 					>
-						Preview
+						{t("Preview")}
 					</p>
 					<h3
 						className={`${tomorrowFont.className} mt-3 text-3xl font-extrabold uppercase ${isLive ? "text-neo-red" : "text-neo-black"} sm:text-4xl`}
 					>
-						{isLive ? "On air now" : "Preview"}
+						{isLive ? t("On air now") : t("Preview")}
 					</h3>
 				</div>
 				<Badge variant={isLive ? "live" : "paper"} className="text-[10px] tracking-[0.18em]">
@@ -77,7 +79,7 @@ export function PreviewCard(props: PreviewCardData) {
 			<CardContent className="my-6 grid max-h-100 grid-cols-[auto_minmax(0,1fr)_auto] items-stretch gap-5">
 				<CoverArt
 					src={props.cover}
-					alt={props.coverAlt ?? `${props.title} cover art`}
+						alt={props.coverAlt ?? t("{title} cover art", { title: props.title })}
 					className="h-full aspect-square"
 				/>
 
@@ -86,7 +88,7 @@ export function PreviewCard(props: PreviewCardData) {
 						<p
 							className={`text-[10px] font-extrabold uppercase tracking-[0.2em] text-black/55 ${groteskFont.className}`}
 						>
-							Playlist
+							{t("Playlist")}
 						</p>
 						<p
 							className={`${groteskFont.className} mt-1 overflow-hidden text-ellipsis whitespace-nowrap text-sm font-bold tracking-tight`}
@@ -107,9 +109,9 @@ export function PreviewCard(props: PreviewCardData) {
 							{props.artist}
 						</p>
 						<div className="mt-4 flex flex-wrap gap-3">
-							<MetaBox label="Ends at" value={props.endsAt} />
+							<MetaBox label={t("Ends at")} value={props.endsAt} />
 							<MetaBox
-								label="Status"
+								label={t("Status")}
 								value={statusLabel}
 								className={isLive ? "bg-neo-red text-white" : "bg-neo-paper text-neo-black"}
 								valueClassName={isLive ? "text-white" : "text-neo-black"}
@@ -132,7 +134,7 @@ export function PreviewCard(props: PreviewCardData) {
 				<p
 					className={`${groteskFont.className} text-xs font-extrabold uppercase tracking-[0.18em]`}
 				>
-					NEXT: {props.nextTrackLabel}
+					{t("NEXT: {track}", { track: props.nextTrackLabel })}
 				</p>
 			</CardFooter>
 		</Card>

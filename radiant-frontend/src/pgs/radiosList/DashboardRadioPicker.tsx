@@ -20,29 +20,29 @@ export function DashboardRadioPicker({ initialRadios }: DashboardRadioPickerProp
 	const radios = useAtomValue(radioListAtom)
 	const radioList = Result.getOrElse(radios, () => initialRadios)
 	const refreshRadios = useAtomRefresh(radioListAtom)
-	const t = useTranslations("dashboardPicker")
+	const t = useTranslations()
 
 	return (
 		<div className="relative mx-auto flex min-h-full w-full max-w-5xl flex-col items-center justify-center px-6 py-10">
 			<div className="flex flex-col items-center gap-4 text-center">
-				<Badge variant="orange">{t("badge")}</Badge>
+				<Badge variant="orange">{t("Dashboard")}</Badge>
 
 				<h1
 					className={`select-none text-center text-4xl tracking-tight text-neo-black sm:text-5xl ${tomorrowFont.className}`}
 				>
-					{t("title")}
+					{t("Choose a radio")}
 				</h1>
 
 				<p
 					className={`max-w-xl select-none text-sm font-bold tracking-tight text-black/65 sm:text-base ${groteskFont.className}`}
 				>
-					{t("description")}
+					{t("Pick a station to open the console monitor automation and manage the library")}
 				</p>
 			</div>
 
 			{radioList.length > 0 ? (
 				<div className="mt-10">
-					<CreateRadioDialog trigger={<Button variant="default">{t("createRadio")}</Button>} />
+					<CreateRadioDialog trigger={<Button variant="default">{t("Create radio")}</Button>} />
 				</div>
 			) : null}
 
@@ -55,10 +55,10 @@ export function DashboardRadioPicker({ initialRadios }: DashboardRadioPickerProp
 			{radioList.length === 0 ? (
 				<div className="mt-12 flex flex-col items-center gap-4 border-3 border-neo-black bg-neo-paper px-6 py-6 shadow-neo-badge">
 					<p className={`select-none text-center text-base text-black/70 ${groteskFont.className}`}>
-						{t("empty")}
+						{t("You don't have any radios yet Create your first station to get started")}
 					</p>
 
-					<CreateRadioDialog trigger={<Button variant="default">{t("createRadio")}</Button>} />
+					<CreateRadioDialog trigger={<Button variant="default">{t("Create radio")}</Button>} />
 				</div>
 			) : null}
 		</div>

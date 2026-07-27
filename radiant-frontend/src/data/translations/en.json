@@ -1,97 +1,80 @@
 {
-	"language": {
-		"label": "Language",
-		"pt": "Portuguese",
-		"en": "English"
-	},
-	"home": {
-		"nav": {
-			"login": "Sign in"
-		},
-		"hero": {
-			"title": "OWN THE AIR",
-			"line1": "Stop waiting for the right station to appear.",
-			"line2": "Start your own.",
-			"cta": "Get started"
-		},
-		"stats": {
-			"playoutLabel": "Playout",
-			"playoutValue": "Calendar driven",
-			"licenceLabel": "License",
-			"outputLabel": "Output",
-			"outputValue": "ICY ready"
-		}
-	},
-	"login": {
-		"kicker": "Authentication",
-		"title": "JOIN THE STATION",
-		"description": "Sign in with an available provider to access your radios, dashboard, and stream tools.",
-		"noProvidersTitle": "No OAuth providers are currently enabled.",
-		"noProvidersDescription": "Enable GitHub or Discord in the backend configuration and this page will update automatically.",
-		"continueWithGithub": "Continue with GitHub",
-		"continueWithDiscord": "Continue with Discord",
-		"continueWithProvider": "Continue with {provider}",
-		"unknownProvider": "Other"
-	},
-	"dashboard": {
-		"nav": {
-			"radios": "Radios",
-			"settings": "Settings"
-		}
-	},
-	"dashboardPicker": {
-		"badge": "Dashboard",
-		"title": "Choose a radio",
-		"description": "Pick a station to open the console, monitor automation and manage the library.",
-		"createRadio": "Create radio",
-		"empty": "You don't have any radios yet. Create your first station to get started."
-	},
-	"createRadio": {
-		"title": "Create radio",
-		"description": "Define the station name and base configuration. You can adjust the rest later in the radio console.",
-		"fields": {
-			"name": {
-				"label": "Name",
-				"placeholder": "Tokyo Hits"
-			},
-			"timezone": {
-				"label": "Timezone",
-				"placeholder": "Choose a timezone"
-			},
-			"description": {
-				"label": "Description",
-				"placeholder": "A short editorial note to identify the station."
-			},
-			"isPublic": {
-				"label": "Public radio",
-				"description": "Allows exposing the station publicly once the stream is ready."
-			}
-		},
-		"errors": {
-			"required": "Name and timezone are required.",
-			"createFailed": "Couldn't create the radio. Please try again."
-		},
-		"actions": {
-			"cancel": "Cancel",
-			"submit": "Create radio",
-			"submitting": "Creating..."
-		}
-	},
-	"dashboardSettings": {
-		"kicker": "Settings",
-		"title": "Workspace settings",
-		"description": "This area will hold account configuration, dashboard preferences and station options."
-	},
-	"radio": {
-		"schedule": "Schedule",
-		"nav": {
-			"settings": "Radio settings"
-		},
-		"dstWarning": "Due to the daylight saving time transition, the time rolls back 1 hour making it look like an extra duplicated hour appeared."
-	},
-	"radioSettings": {
-		"kicker": "Radio settings",
-		"title": "Station {radioId}",
-		"description": "This area will hold the configuration specific to this radio."
-	}
+	"Language": "Language",
+	"Portuguese": "Portuguese",
+	"English": "English",
+	"Sign in": "Sign in",
+	"OWN THE AIR": "OWN THE AIR",
+	"Stop waiting for the right station to appear": "Stop waiting for the right station to appear.",
+	"Start your own": "Start your own.",
+	"Get started": "Get started",
+	"Playout": "Playout",
+	"Calendar driven": "Calendar driven",
+	"License": "License",
+	"GPL-3-0": "GPL-3.0",
+	"Output": "Output",
+	"ICY ready": "ICY ready",
+	"Authentication": "Authentication",
+	"JOIN THE STATION": "JOIN THE STATION",
+	"Sign in with an available provider to access your radios dashboard and stream tools": "Sign in with an available provider to access your radios, dashboard, and stream tools.",
+	"No OAuth providers are currently enabled": "No OAuth providers are currently enabled.",
+	"Enable GitHub or Discord in the backend configuration and this page will update automatically": "Enable GitHub or Discord in the backend configuration and this page will update automatically.",
+	"Continue with GitHub": "Continue with GitHub",
+	"Continue with Discord": "Continue with Discord",
+	"Continue with {provider}": "Continue with {provider}",
+	"Other": "Other",
+	"Radios": "Radios",
+	"Settings": "Settings",
+	"Dashboard": "Dashboard",
+	"Choose a radio": "Choose a radio",
+	"Pick a station to open the console monitor automation and manage the library": "Pick a station to open the console, monitor automation and manage the library.",
+	"Create radio": "Create radio",
+	"You don't have any radios yet Create your first station to get started": "You don't have any radios yet. Create your first station to get started.",
+	"Name": "Name",
+	"Tokyo Hits": "Tokyo Hits",
+	"Timezone": "Timezone",
+	"Choose a timezone": "Choose a timezone",
+	"Description": "Description",
+	"A short editorial note to identify the station": "A short editorial note to identify the station.",
+	"Public radio": "Public radio",
+	"Allows exposing the station publicly once the stream is ready": "Allows exposing the station publicly once the stream is ready.",
+	"Name and timezone are required": "Name and timezone are required.",
+	"Couldn't create the radio Please try again": "Couldn't create the radio. Please try again.",
+	"Cancel": "Cancel",
+	"Creating": "Creating...",
+	"Workspace settings": "Workspace settings",
+	"This area will hold account configuration dashboard preferences and station options": "This area will hold account configuration, dashboard preferences and station options.",
+	"Schedule": "Schedule",
+	"Radio settings": "Radio settings",
+	"Due to the daylight saving time transition the time rolls back 1 hour making it look like an extra duplicated hour appeared": "Due to the daylight saving time transition, the time rolls back 1 hour making it look like an extra duplicated hour appeared.",
+	"Station {radioId}": "Station {radioId}",
+	"This area will hold the configuration specific to this radio": "This area will hold the configuration specific to this radio.",
+	"Mon": "Mon",
+	"Tue": "Tue",
+	"Wed": "Wed",
+	"Thu": "Thu",
+	"Fri": "Fri",
+	"Sat": "Sat",
+	"Sun": "Sun",
+	"SKIPPED": "SKIPPED",
+	"AUDIO": "AUDIO",
+	"PLAYLIST": "PLAYLIST",
+	"RST": "RST",
+	"BETA": "BETA",
+	"Go Live": "Go Live",
+	"Dashboard navigation": "Dashboard navigation",
+	"Radio": "Radio",
+	"open": "open",
+	"Preview": "Preview",
+	"On air now": "On air now",
+	"Live": "Live",
+	"Off air": "Off air",
+	"Playlist": "Playlist",
+	"Ends at": "Ends at",
+	"Status": "Status",
+	"NEXT: {track}": "NEXT: {track}",
+	"{title} cover art": "{title} cover art",
+	"Preview volume": "Preview volume",
+	"Unmute preview": "Unmute preview",
+	"Mute preview": "Mute preview",
+	"logo wave icon": "logo wave icon"
 }

@@ -1,97 +1,80 @@
 {
-	"language": {
-		"label": "Idioma",
-		"pt": "Português",
-		"en": "Inglês"
-	},
-	"home": {
-		"nav": {
-			"login": "Entrar"
-		},
-		"hero": {
-			"title": "TOMA CONTA DO AR",
-			"line1": "Para de esperar que a estação certa apareça.",
-			"line2": "Cria a tua.",
-			"cta": "Começar"
-		},
-		"stats": {
-			"playoutLabel": "Playout",
-			"playoutValue": "Movido por calendário",
-			"licenceLabel": "Licença",
-			"outputLabel": "Saída",
-			"outputValue": "Pronto para ICY"
-		}
-	},
-	"login": {
-		"kicker": "Autenticação",
-		"title": "ENTRA NA ESTAÇÃO",
-		"description": "Entra com um fornecedor disponível para aceder às tuas rádios, dashboard e ferramentas de stream.",
-		"noProvidersTitle": "Nenhum fornecedor OAuth está ativo.",
-		"noProvidersDescription": "Ativa GitHub ou Discord na configuração do backend e esta página atualiza automaticamente.",
-		"continueWithGithub": "Continuar com GitHub",
-		"continueWithDiscord": "Continuar com Discord",
-		"continueWithProvider": "Continuar com {provider}",
-		"unknownProvider": "Outro"
-	},
-	"dashboard": {
-		"nav": {
-			"radios": "Rádios",
-			"settings": "Definições"
-		}
-	},
-	"dashboardPicker": {
-		"badge": "Dashboard",
-		"title": "Seleciona uma Rádio",
-		"description": "Escolhe uma estação para abrir o console, acompanhar a automação e gerir a library.",
-		"createRadio": "Criar rádio",
-		"empty": "Ainda não tens rádios. Cria a primeira estação para começar."
-	},
-	"createRadio": {
-		"title": "Criar rádio",
-		"description": "Define o nome e a configuração base da estação. Podes ajustar o resto depois no console da rádio.",
-		"fields": {
-			"name": {
-				"label": "Nome",
-				"placeholder": "Tokyo Hits"
-			},
-			"timezone": {
-				"label": "Timezone",
-				"placeholder": "Escolhe uma timezone"
-			},
-			"description": {
-				"label": "Descrição",
-				"placeholder": "Uma breve nota editorial para identificar a estação."
-			},
-			"isPublic": {
-				"label": "Rádio pública",
-				"description": "Permite expor a estação publicamente quando o stream estiver pronto."
-			}
-		},
-		"errors": {
-			"required": "Nome e timezone são obrigatórios.",
-			"createFailed": "Não foi possível criar a rádio. Tenta novamente."
-		},
-		"actions": {
-			"cancel": "Cancelar",
-			"submit": "Criar rádio",
-			"submitting": "A criar..."
-		}
-	},
-	"dashboardSettings": {
-		"kicker": "Definições",
-		"title": "Definições do workspace",
-		"description": "Esta área vai concentrar configuração da conta, preferências do dashboard e opções da estação."
-	},
-	"radio": {
-		"schedule": "Horário",
-		"nav": {
-			"settings": "Definições da rádio"
-		},
-		"dstWarning": "Devido à transição do Horário de Verão, a hora volta uma hora para trás adicionando uma hora extra aparentemente duplicada"
-	},
-	"radioSettings": {
-		"kicker": "Definições da rádio",
-		"title": "Estação {radioId}",
-		"description": "Esta área vai concentrar as configurações específicas desta rádio."
-	}
+	"Language": "Idioma",
+	"Portuguese": "Português",
+	"English": "Inglês",
+	"Sign in": "Entrar",
+	"OWN THE AIR": "TOMA CONTA DO AR",
+	"Stop waiting for the right station to appear": "Para de esperar que a estação certa apareça.",
+	"Start your own": "Cria a tua.",
+	"Get started": "Começar",
+	"Playout": "Playout",
+	"Calendar driven": "Movido por calendário",
+	"License": "Licença",
+	"GPL-3-0": "GPL-3.0",
+	"Output": "Saída",
+	"ICY ready": "Pronto para ICY",
+	"Authentication": "Autenticação",
+	"JOIN THE STATION": "ENTRA NA ESTAÇÃO",
+	"Sign in with an available provider to access your radios dashboard and stream tools": "Entra com um fornecedor disponível para aceder às tuas rádios, dashboard e ferramentas de stream.",
+	"No OAuth providers are currently enabled": "Nenhum fornecedor OAuth está ativo.",
+	"Enable GitHub or Discord in the backend configuration and this page will update automatically": "Ativa GitHub ou Discord na configuração do backend e esta página atualiza automaticamente.",
+	"Continue with GitHub": "Continuar com GitHub",
+	"Continue with Discord": "Continuar com Discord",
+	"Continue with {provider}": "Continuar com {provider}",
+	"Other": "Outro",
+	"Radios": "Rádios",
+	"Settings": "Definições",
+	"Dashboard": "Dashboard",
+	"Choose a radio": "Seleciona uma Rádio",
+	"Pick a station to open the console monitor automation and manage the library": "Escolhe uma estação para abrir o console, acompanhar a automação e gerir a library.",
+	"Create radio": "Criar rádio",
+	"You don't have any radios yet Create your first station to get started": "Ainda não tens rádios. Cria a primeira estação para começar.",
+	"Name": "Nome",
+	"Tokyo Hits": "Tokyo Hits",
+	"Timezone": "Timezone",
+	"Choose a timezone": "Escolhe uma timezone",
+	"Description": "Descrição",
+	"A short editorial note to identify the station": "Uma breve nota editorial para identificar a estação.",
+	"Public radio": "Rádio pública",
+	"Allows exposing the station publicly once the stream is ready": "Permite expor a estação publicamente quando o stream estiver pronto.",
+	"Name and timezone are required": "Nome e timezone são obrigatórios.",
+	"Couldn't create the radio Please try again": "Não foi possível criar a rádio. Tenta novamente.",
+	"Cancel": "Cancelar",
+	"Creating": "A criar...",
+	"Workspace settings": "Definições do workspace",
+	"This area will hold account configuration dashboard preferences and station options": "Esta área vai concentrar configuração da conta, preferências do dashboard e opções da estação.",
+	"Schedule": "Horário",
+	"Radio settings": "Definições da rádio",
+	"Due to the daylight saving time transition the time rolls back 1 hour making it look like an extra duplicated hour appeared": "Devido à transição do Horário de Verão, a hora volta uma hora para trás adicionando uma hora extra aparentemente duplicada.",
+	"Station {radioId}": "Estação {radioId}",
+	"This area will hold the configuration specific to this radio": "Esta área vai concentrar as configurações específicas desta rádio.",
+	"Mon": "Seg",
+	"Tue": "Ter",
+	"Wed": "Qua",
+	"Thu": "Qui",
+	"Fri": "Sex",
+	"Sat": "Sáb",
+	"Sun": "Dom",
+	"SKIPPED": "SALTADO",
+	"AUDIO": "ÁUDIO",
+	"PLAYLIST": "PLAYLIST",
+	"RST": "RST",
+	"BETA": "BETA",
+	"Go Live": "Ir ao Vivo",
+	"Dashboard navigation": "Navegação do dashboard",
+	"Radio": "Rádio",
+	"open": "abrir",
+	"Preview": "Pré-escuta",
+	"On air now": "Agora no ar",
+	"Live": "Ao vivo",
+	"Off air": "Fora do ar",
+	"Playlist": "Playlist",
+	"Ends at": "Termina às",
+	"Status": "Estado",
+	"NEXT: {track}": "SEGUENTE: {track}",
+	"{title} cover art": "Capa de {title}",
+	"Preview volume": "Volume de pré-escuta",
+	"Unmute preview": "Ativar som de pré-escuta",
+	"Mute preview": "Silenciar pré-escuta",
+	"logo wave icon": "ícone de onda do logo"
 }

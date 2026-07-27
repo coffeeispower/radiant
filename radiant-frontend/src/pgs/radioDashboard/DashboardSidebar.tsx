@@ -14,18 +14,18 @@ import { cn } from "@/utils/cn"
 export function DashboardSidebar() {
 	const pathname = usePathname()
 	const currentUser = useOptionalCurrentUser()
-	const t = useTranslations("dashboard.nav")
+	const t = useTranslations()
 
 	const navItems = [
 		{
 			href: "/dashboard",
-			label: t("radios"),
+			label: t("Radios"),
 			icon: radioStationSvg,
 			isActive: pathname === "/dashboard" || pathname.startsWith("/dashboard/radios/"),
 		},
 		{
 			href: "/dashboard/settings",
-			label: t("settings"),
+			label: t("Settings"),
 			icon: settingsSvg,
 			isActive: pathname === "/dashboard/settings",
 		},
@@ -34,7 +34,7 @@ export function DashboardSidebar() {
 	return (
 		<aside className="flex flex-col justify-between border-r-3 border-neo-black">
 			<div>
-				<nav className="flex flex-col items-stretch" aria-label="Dashboard navigation">
+				<nav className="flex flex-col items-stretch" aria-label={t("Dashboard navigation")}>
 					{navItems.map((item, index) => (
 						<Link
 							key={item.href}

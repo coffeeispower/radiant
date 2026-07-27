@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { cn } from "@/utils/cn"
 import { Schedule } from "@radiant/client"
 
@@ -19,7 +20,8 @@ export function ScheduleBlockCard(props: {
 	className?: string
 }) {
 	const { block, style, className } = props
-	const targetLabel = block.target.targetType === "audio_file" ? "AUDIO" : "PLAYLIST"
+	const t = useTranslations()
+	const targetLabel = block.target.targetType === "audio_file" ? t("AUDIO") : t("PLAYLIST")
 
 	return (
 		<div
@@ -36,7 +38,7 @@ export function ScheduleBlockCard(props: {
 			</span>
 			{block.playbackMode === "restart" && (
 				<span className="font-mono text-[0.5rem] font-bold text-neo-black/60 leading-tight uppercase">
-					RST
+					{t("RST")}
 				</span>
 			)}
 		</div>

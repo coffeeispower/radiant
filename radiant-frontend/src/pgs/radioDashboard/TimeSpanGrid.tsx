@@ -5,9 +5,10 @@ import { JSX } from "react"
 import { type WeekInfo, type Time } from "./weekCalendarLayout"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/Tooltip"
 import { useTranslations } from "next-intl"
+import { tomorrowFont } from "@/lib/fonts"
 
 export const TICK_LABEL_WIDTH = "4.5rem"
-const WEEKDAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] as const
+const WEEKDAY_KEYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] as const
 
 type TimeSpanGridProps = {
 	readonly week: WeekInfo
@@ -26,7 +27,7 @@ function formatDayDate(date: Time): string {
 
 export function TimeSpanGrid(props: TimeSpanGridProps): JSX.Element {
 	const { week, displayDayDuration, tickCount, days, gridRef } = props
-	const t = useTranslations("radio")
+	const t = useTranslations()
 
 	const skipHour = week.dstSkipPoint.pipe(Option.map(({ point }) => {
 		const { hours, minutes } = DateTime.toParts(point)
@@ -63,7 +64,7 @@ export function TimeSpanGrid(props: TimeSpanGridProps): JSX.Element {
 						<Tooltip>
 							<TooltipTrigger className="text-neo-orange font-bold text-[0.6rem] cursor-help mr-1">(!)</TooltipTrigger>
 							<TooltipContent side="right">
-								<p>{t("dstWarning")}</p>
+								<p>{t("Due to the daylight saving time transition the time rolls back 1 hour making it look like an extra duplicated hour appeared")}</p>
 							</TooltipContent>
 						</Tooltip>
 					</TooltipProvider>
@@ -94,10 +95,10 @@ export function TimeSpanGrid(props: TimeSpanGridProps): JSX.Element {
 			<div className="border-b-3 border-b-neo-black border-r-3 border-r-neo-black bg-neo-paper" />
 			{days.map((day, i) => (
 				<div key={i} data-day-col={i}
-					className="flex flex-col items-center justify-center py-1.5 border-b-3 border-b-neo-black border-r-3 border-r-neo-black last:border-r-0 bg-neo-paper"
+					className="flex flex-col items-center justify-center py-1.5 border-b-3 border-b-neo-black border-r-3 border-r-neo-black last:border-r-0 bg-neo-paper  shadow-neo-down shadow-black/20 relative z-10"
 				>
-					<span className="font-mono text-[0.65rem] font-bold text-neo-black uppercase tracking-micro leading-none">
-						{WEEKDAY_LABELS[i]}
+					<span className={`text-[0.65rem] font-bold text-neo-black uppercase tracking-micro leading-none ${tomorrowFont.className}`}>
+						{t(WEEKDAY_KEYS[i])}
 					</span>
 					<span className="font-mono text-[0.55rem] font-bold text-neo-black/50 leading-none mt-0.5">
 						{formatDayDate(day.date)}

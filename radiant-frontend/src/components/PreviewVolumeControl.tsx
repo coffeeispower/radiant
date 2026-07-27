@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useTranslations } from "next-intl"
 import { tomorrowFont } from "@/lib/fonts"
 import { Button } from "@/components/Button"
 import { VerticalSlider } from "@/components/VerticalSlider"
@@ -15,6 +16,7 @@ type PreviewVolumeControlProps = {
 }
 
 export function PreviewVolumeControl(props: PreviewVolumeControlProps) {
+	const t = useTranslations()
 	const isControlledVolume = props.volume !== undefined
 	const isControlledMuted = props.muted !== undefined
 	const [uncontrolledVolume, setUncontrolledVolume] = useState(props.defaultVolume ?? 72)
@@ -70,14 +72,14 @@ export function PreviewVolumeControl(props: PreviewVolumeControlProps) {
 				{volume}%
 			</p>
 
-			<VerticalSlider value={volume} onChange={setVolume} label="Preview volume" />
+			<VerticalSlider value={volume} onChange={setVolume} label={t("Preview volume")} />
 
 			<Button
 				type="button"
 				size="icon"
 				variant="secondary"
 				onClick={toggleMute}
-				aria-label={muted ? "Unmute preview" : "Mute preview"}
+				aria-label={muted ? t("Unmute preview") : t("Mute preview")}
 			>
 				<svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
 					{muted ? (

@@ -31,7 +31,7 @@ function getOAuthProviders() {
 
 export default async function LoginPage() {
 	const [currentUser, providers] = await Promise.all([getCurrentUser(), runServerEffect(getOAuthProviders())])
-	const t = await getTranslations("login")
+	const t = await getTranslations()
 	if (Option.isSome(currentUser)) {
 		redirect("/dashboard")
 	}
@@ -42,23 +42,23 @@ export default async function LoginPage() {
 				<Card className="w-full max-w-xl bg-white shadow-neo-panel">
 					<div className="flex items-center gap-7 border-b-3 border-neo-black px-6 py-4 text-neo-black sm:px-8">
 						<RadiantLogo />
-						<Badge variant="mint">BETA</Badge>
+						<Badge variant="mint">{t("BETA")}</Badge>
 					</div>
 					<CardHeader className="p-6 sm:p-8">
 						<p
 							className={`text-[10px] font-extrabold uppercase tracking-[0.26em] text-black/55 ${groteskFont.className}`}
 						>
-							{t("kicker")}
-						</p>
-						<CardTitle
-							className={`${displayFont.className} mt-3 max-w-[7ch] text-[3.25rem] leading-[0.9] text-neo-black sm:text-[4.25rem]`}
-						>
-							{t("title")}
-						</CardTitle>
-						<CardDescription
-							className={`${groteskFont.className} mt-4 max-w-[34rem] text-base leading-7 text-black/75 sm:text-lg`}
-						>
-							{t("description")}
+						{t("Authentication")}
+					</p>
+					<CardTitle
+						className={`${displayFont.className} mt-3 max-w-[7ch] text-[3.25rem] leading-[0.9] text-neo-black sm:text-[4.25rem]`}
+					>
+						{t("JOIN THE STATION")}
+					</CardTitle>
+					<CardDescription
+						className={`${groteskFont.className} mt-4 max-w-[34rem] text-base leading-7 text-black/75 sm:text-lg`}
+					>
+						{t("Sign in with an available provider to access your radios dashboard and stream tools")}
 						</CardDescription>
 					</CardHeader>
 
@@ -69,10 +69,10 @@ export default async function LoginPage() {
 									<p
 										className={`${tomorrowFont.className} text-sm font-extrabold uppercase text-neo-black`}
 									>
-										{t("noProvidersTitle")}
+										{t("No OAuth providers are currently enabled")}
 									</p>
 									<p className={`${groteskFont.className} mt-2 text-sm leading-6 text-black/70`}>
-										{t("noProvidersDescription")}
+										{t("Enable GitHub or Discord in the backend configuration and this page will update automatically")}
 									</p>
 								</div>
 							) : (
@@ -98,11 +98,11 @@ export default async function LoginPage() {
 														<Image src={meta.icon} alt="" aria-hidden="true" className="h-5 w-5" />
 													)}
 												</span>
-												{provider === "github"
-													? t("continueWithGithub")
-													: provider === "discord"
-														? t("continueWithDiscord")
-														: t("continueWithProvider", { provider })}
+											{provider === "github"
+												? t("Continue with GitHub")
+												: provider === "discord"
+													? t("Continue with Discord")
+													: t("Continue with {provider}", { provider })}
 											</a>
 										</Button>
 									)

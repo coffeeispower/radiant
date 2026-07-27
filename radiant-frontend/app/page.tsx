@@ -29,12 +29,13 @@ function LoginButton(props: { label: string }) {
 }
 
 async function Layout({ user, children, loginLabel }: LayoutProps) {
+	const t = await getTranslations()
 	return (
 		<div className="container mx-auto">
 			<nav className="bg-white m-3 shadow-neo-panel border-3 border-neo-black select-none">
 				<div className="flex justify-between items-center py-4 px-6 text-neo-black">
 					<div className="flex gap-7 items-center">
-						<RadiantLogo /> <Badge variant="mint">BETA</Badge>
+						<RadiantLogo /> 						<Badge variant="mint">{t("BETA")}</Badge>
 					</div>
 					{Option.match(user, {
 						onSome: (user) => (
@@ -58,10 +59,10 @@ async function Layout({ user, children, loginLabel }: LayoutProps) {
 }
 export default async function Home() {
 	const user = await getCurrentUser()
-	const t = await getTranslations("home.nav")
+	const t = await getTranslations()
 
 	return (
-		<Layout user={user} loginLabel={t("login")}>
+		<Layout user={user} loginLabel={t("Sign in")}>
 			<main className="shadow-neo-panel bg-white m-3 mt-6 border-neo-black border-3 min-h-screen">
 				<section className="flex min-h-[90vh] flex-col 2xl:grid 2xl:grid-cols-2">
 					<div className="border-b-3 border-neo-black p-6 text-neo-black sm:p-8 2xl:flex 2xl:flex-col 2xl:justify-center 2xl:border-b-0 2xl:border-r-3 2xl:p-12">
@@ -71,7 +72,7 @@ export default async function Home() {
 					<div className="gap-0 bg-blue-50/70 p-4 sm:p-6 flex flex-col justify-center">
 						<PreviewCard
 							cover={matsuriCover}
-							coverAlt="Matsuri cover art"
+							coverAlt={t("{title} cover art", { title: "Matsuri" })}
 							title="Matsuri"
 							artist="Fujii Kaze"
 							playlistName="Sunset Rotation / Festival Cuts"

@@ -11,6 +11,7 @@ import { useElementSize } from "@/hooks/useElementSize";
 import { cn } from "@/utils/cn";
 import { TimeSpanGrid, TICK_LABEL_WIDTH } from "./TimeSpanGrid";
 import { BlockOverlay } from "./BlockOverlay";
+import { groteskFont, tomorrowFont } from "@/lib/fonts";
 
 const TICK_FONT = "14px ui-monospace, SFMono-Regular, monospace";
 const TICK_MARGIN_PX = 14;
@@ -28,7 +29,7 @@ function getTickTextHeight(): number {
 
 export function WeekCalendar(props: PropsWithoutRef<{radioAtom: GetRadioAtom, className?: string}>) {
 
-	const t = useTranslations("radio");
+	const t = useTranslations();
 	const calendarViewportSize = useElementSize<HTMLDivElement>();
 	const radio = useAtomValue(props.radioAtom);
 
@@ -93,8 +94,8 @@ export function WeekCalendar(props: PropsWithoutRef<{radioAtom: GetRadioAtom, cl
 
 	return (
 		<Card className={cn("flex flex-col", props.className)}>
-			<CardHeader className="p-4">
-				<CardTitle>{t("schedule")}</CardTitle>
+			<CardHeader className="px-4 py-2">
+				<CardTitle className={`font-sans font-semibold ${tomorrowFont.className}`}>{t("Schedule")}</CardTitle>
 			</CardHeader>
 			<CardContent className="h-full flex flex-col border-t-3">
 				<div className="relative h-full flex flex-col" ref={calendarViewportSize.ref}>

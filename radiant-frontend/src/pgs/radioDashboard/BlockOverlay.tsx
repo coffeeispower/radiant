@@ -2,6 +2,7 @@
 
 import { DateTime, Option } from "effect"
 import { JSX, useMemo } from "react"
+import { useTranslations } from "next-intl"
 import { Schedule } from "@radiant/client"
 import { type WeekInfo, type DSTSkipPoint } from "./weekCalendarLayout"
 import { ScheduleBlockCard } from "./ScheduleBlockCard"
@@ -127,6 +128,7 @@ function minuteToPixel(
 
 export function BlockOverlay(props: BlockOverlayProps): JSX.Element {
 	const { week, weeklyRules, weeklyOccurrences, oneOffBlocks, timezone, displayDayDuration, rowMeasurements, colMeasurements } = props
+	const t = useTranslations()
 
 	const blocksByDay = useMemo(() => {
 		const byDay: RenderedBlock[][] = Array.from({ length: 7 }, () => [])
@@ -192,7 +194,7 @@ export function BlockOverlay(props: BlockOverlayProps): JSX.Element {
 									className="bg-neutral-300 border-3 border-neo-black shadow-neo-badge overflow-hidden cursor-default select-none flex items-center justify-center z-0"
 								>
 									<span className="font-mono text-[0.6rem] font-bold text-neo-black uppercase tracking-micro">
-										SKIPPED
+										{t("SKIPPED")}
 									</span>
 								</div>
 							)

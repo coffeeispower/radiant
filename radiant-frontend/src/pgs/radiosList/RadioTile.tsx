@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { useTranslations } from "next-intl"
 
 import { groteskFont, tomorrowFont } from "@/lib/fonts"
 import { Badge } from "@/components/Badge"
@@ -9,6 +10,7 @@ type RadioTileProps = {
 }
 
 export function RadioTile({ id, name }: RadioTileProps) {
+	const t = useTranslations()
 	const displayName = name
 		.split(" ")
 		.slice(0, 2)
@@ -23,7 +25,7 @@ export function RadioTile({ id, name }: RadioTileProps) {
 						<div
 							className={`text-[10px] font-bold uppercase tracking-[0.24em] text-[#58efb0] ${groteskFont.className}`}
 						>
-							Radio
+							{t("Radio")}
 						</div>
 
 						<div
@@ -42,7 +44,7 @@ export function RadioTile({ id, name }: RadioTileProps) {
 					</div>
 
 					<Badge variant="mint" className="px-2 py-1 text-[9px] shadow-none">
-						open
+						{t("open")}
 					</Badge>
 				</div>
 			</div>

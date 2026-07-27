@@ -3,17 +3,20 @@ import { RadiantLogo } from "@/components/RadiantLogo"
 import { Badge } from "@/components/Badge"
 import { Button } from "@/components/Button"
 
+import { useTranslations } from "next-intl"
+
 export function TopBar(props: { username: string; avatarUrl?: string }) {
+	const t = useTranslations()
 	return (
 		<div className="flex items-center justify-between border-b-3 border-neo-black bg-white px-6 py-4">
 			<div className="flex items-center gap-6">
 				<RadiantLogo />
-				<Badge variant="mint">BETA</Badge>
+				<Badge variant="mint">{t("BETA")}</Badge>
 			</div>
 
 			<div className="flex items-center gap-4">
 				<Button variant="secondary" size="sm">
-					Go Live
+					{t("Go Live")}
 				</Button>
 				<div
 					className={`flex items-center gap-3 text-sm font-bold tracking-tight text-neo-black ${groteskFont.className}`}

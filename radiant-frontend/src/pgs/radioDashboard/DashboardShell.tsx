@@ -1,5 +1,6 @@
 import { cva } from "class-variance-authority"
 import type { ReactNode } from "react"
+import { useTranslations } from "next-intl"
 import { RadiantLogo } from "@/components/RadiantLogo"
 import { Badge } from "@/components/Badge"
 import { ScrollArea } from "@/components/ScrollArea"
@@ -21,6 +22,7 @@ const shellVariants = cva("grid h-screen overflow-hidden text-neo-black bg-white
 
 export function DashboardShell({ children, sidebar }: DashboardShellProps) {
 	const hasSidebar = sidebar != null
+	const t = useTranslations()
 
 	return (
 		<main className={shellVariants({ hasSidebar })}>
@@ -29,7 +31,7 @@ export function DashboardShell({ children, sidebar }: DashboardShellProps) {
 					<a href="/">
 						<div className="flex items-center gap-6">
 							<RadiantLogo />
-							<Badge variant="mint">BETA</Badge>
+							<Badge variant="mint">{t("BETA")}</Badge>
 						</div>
 					</a>
 				</div>
