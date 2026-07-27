@@ -1,4 +1,5 @@
-import { HttpApiBuilder, HttpApiSwagger, HttpApp, HttpServer } from "@effect/platform"
+import { Etag, HttpApiBuilder, HttpApiSwagger, HttpApp } from "@effect/platform"
+import { BunContext, BunHttpPlatform } from "@effect/platform-bun"
 import { Middleware, Router } from "@effect/platform/HttpApiBuilder"
 import * as RadiantClient from "@radiant/client"
 import { Effect, Layer, ManagedRuntime } from "effect"
@@ -16,7 +17,9 @@ export const RadiantApiImpl = HttpApiBuilder.api(RadiantClient.ApiContract.httpA
 	Layer.provide(scheduleBlocksGroupLive),
 	Layer.provide(mediaLibraryGroupLive),
 	Layer.provide(AuthorizationLive),
-	Layer.provideMerge(HttpServer.layerContext),
+	Layer.provideMerge(BunContext.layer),
+	Layer.provideMerge(BunHttpPlatform.layer),
+	Layer.provideMerge(Etag.layerWeak),
 	Layer.provideMerge(Router.Live),
 	Layer.provideMerge(Middleware.layer),
 )

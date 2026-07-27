@@ -129,7 +129,7 @@ export const UploadFileUrlParams = Schema.Struct({
 export type UploadFileUrlParams = typeof UploadFileUrlParams.Type
 
 export const UploadFilePayload = HttpApiSchema.Multipart(Schema.Struct({
-	file: Multipart.FileSchema,
+	file: Multipart.SingleFileSchema,
 }))
 export type UploadFilePayload = typeof UploadFilePayload.Type
 

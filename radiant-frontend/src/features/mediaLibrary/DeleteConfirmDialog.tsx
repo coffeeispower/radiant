@@ -1,6 +1,7 @@
 "use client"
 
 import { MediaNode } from "@radiant/client"
+import { useTranslations } from "next-intl"
 
 import { Button } from "@/components/Button"
 import {
@@ -20,6 +21,7 @@ interface DeleteConfirmDialogProps {
 }
 
 export function DeleteConfirmDialog({ state, actions }: DeleteConfirmDialogProps) {
+	const t = useTranslations()
 	const isOpen = state.pendingContextMenu?.kind === "deleteConfirm"
 	const targetIds = state.pendingContextMenu?.targetIds ?? new Set()
 	const count = state.countRecursive(targetIds)
@@ -37,24 +39,24 @@ export function DeleteConfirmDialog({ state, actions }: DeleteConfirmDialogProps
 		<Dialog open={isOpen} onOpenChange={(open) => !open && handleCancel()}>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Delete Items</DialogTitle>
+					<DialogTitle>{t("Delete Items")}</DialogTitle>
 					<DialogDescription>
 						{targetIds.size === 1
-							? `Are you sure you want to delete this item?`
-							: `Are you sure you want to delete these ${targetIds.size} items?`}
+							? t("Are you sure you want to delete this item")
+							: t("Are you sure you want to delete these {count} items", { count: targetIds.size })}
 						{count > targetIds.size && (
 							<span className="mt-1 block text-sm font-medium text-black/70">
-								This will also delete {count - targetIds.size} nested item{count - targetIds.size > 1 ? "s" : ""}.
+								{t("This will also delete {count} nested item(s)", { count: count - targetIds.size })}
 							</span>
 						)}
 					</DialogDescription>
 				</DialogHeader>
 				<DialogFooter>
 					<Button variant="ghost" onClick={handleCancel}>
-						Cancel
+						{t("Cancel")}
 					</Button>
 					<Button variant="default" onClick={handleConfirm}>
-						Delete
+						{t("Delete")}
 					</Button>
 				</DialogFooter>
 			</DialogContent>

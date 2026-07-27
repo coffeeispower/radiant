@@ -1,6 +1,7 @@
 "use client"
 
 import { MediaNode, Radio } from "@radiant/client"
+import { useTranslations } from "next-intl"
 import { useCallback, useRef, useState } from "react"
 
 import { Button } from "@/components/Button"
@@ -31,6 +32,7 @@ interface MediaLibraryProps {
 }
 
 export function MediaLibrary({ radioId, className }: MediaLibraryProps) {
+	const t = useTranslations()
 	const fileInputRef = useRef<HTMLInputElement>(null)
 	const treeAtom = useMediaLibraryTreeAtom(radioId)
 	const tree = useMediaTree(radioId, treeAtom)
@@ -76,7 +78,7 @@ export function MediaLibrary({ radioId, className }: MediaLibraryProps) {
 
 	return (
 		<Panel
-			title="Media Library"
+			title={t("Media Library")}
 			className={cn("flex flex-col overflow-hidden", className)}
 			headerActions={
 				<div className="flex gap-2">
@@ -84,7 +86,7 @@ export function MediaLibrary({ radioId, className }: MediaLibraryProps) {
 						variant="ghost"
 						size="icon"
 						onClick={handleUploadClick}
-						title="Upload audio files"
+						title={t("Upload audio files")}
 					>
 						<UploadIcon className="h-4 w-4" />
 					</Button>
@@ -92,7 +94,7 @@ export function MediaLibrary({ radioId, className }: MediaLibraryProps) {
 						variant="ghost"
 						size="icon"
 						onClick={() => openNewFolderDialog(null)}
-						title="New folder"
+						title={t("New folder")}
 					>
 						<NewFolderIcon className="h-4 w-4" />
 					</Button>
@@ -118,19 +120,19 @@ export function MediaLibrary({ radioId, className }: MediaLibraryProps) {
 				<DialogContent>
 					<form onSubmit={handleNewFolderSubmit}>
 						<DialogHeader>
-							<DialogTitle>New Folder</DialogTitle>
+							<DialogTitle>{t("New Folder")}</DialogTitle>
 							<DialogDescription>
-								Enter a name for the new folder.
+								{t("Enter a name for the new folder")}
 							</DialogDescription>
 						</DialogHeader>
 						<div className="mt-4">
-							<Label htmlFor="new-folder-name">Folder name</Label>
+							<Label htmlFor="new-folder-name">{t("Folder name")}</Label>
 							<Input
 								id="new-folder-name"
 								value={newFolderName}
 								maxLength={MAX_NODE_NAME_LENGTH}
 								autoFocus
-								placeholder="Jingles"
+								placeholder={t("Jingles")}
 								className="mt-2"
 								onChange={(e) => setNewFolderName(e.target.value)}
 							/>
@@ -141,14 +143,14 @@ export function MediaLibrary({ radioId, className }: MediaLibraryProps) {
 								variant="ghost"
 								onClick={() => setIsFolderDialogOpen(false)}
 							>
-								Cancel
+								{t("Cancel")}
 							</Button>
 							<Button
 								type="submit"
 								variant="default"
 								disabled={newFolderName.trim().length === 0}
 							>
-								Create
+								{t("Create")}
 							</Button>
 						</DialogFooter>
 					</form>

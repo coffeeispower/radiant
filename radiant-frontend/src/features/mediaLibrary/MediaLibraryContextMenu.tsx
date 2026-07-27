@@ -1,6 +1,7 @@
 "use client"
 
 import { MediaNode } from "@radiant/client"
+import { useTranslations } from "next-intl"
 
 import {
 	ContextMenu,
@@ -62,6 +63,7 @@ export function MediaLibraryContextMenu({
 	onUploadHere,
 	onNewFolder,
 }: MediaLibraryContextMenuProps) {
+	const t = useTranslations()
 	const hasSelection = state.selection.selectedIds.size > 0
 	const singleFolderId = getSingleFolderId(state)
 	const canUpload = hasSingleFolderSelection(state)
@@ -110,14 +112,14 @@ export function MediaLibraryContextMenu({
 					onSelect={() => onUploadHere(singleFolderId)}
 				>
 					<UploadIcon className="mr-2 h-4 w-4" />
-					Upload File
+					{t("Upload File")}
 				</ContextMenuItem>
 				<ContextMenuItem
 					disabled={!canCreateFolder}
 					onSelect={() => onNewFolder(singleFolderId)}
 				>
 					<NewFolderIcon className="mr-2 h-4 w-4" />
-					Create Folder
+					{t("Create Folder")}
 				</ContextMenuItem>
 				<ContextMenuSeparator />
 				<ContextMenuItem
@@ -125,30 +127,30 @@ export function MediaLibraryContextMenu({
 					onSelect={handleRename}
 				>
 					<RenameIcon className="mr-2 h-4 w-4" />
-					Rename
+					{t("Rename")}
 				</ContextMenuItem>
 				<ContextMenuItem
 					disabled={!hasSelection}
 					onSelect={handleDelete}
 				>
 					<DeleteIcon className="mr-2 h-4 w-4" />
-					Delete
+					{t("Delete")}
 				</ContextMenuItem>
 				<ContextMenuSeparator />
 				<ContextMenuItem onSelect={handleCut}>
 					<CutIcon className="mr-2 h-4 w-4" />
-					Cut
+					{t("Cut")}
 				</ContextMenuItem>
 				<ContextMenuItem
 					disabled={state.clipboard === null}
 					onSelect={handlePaste}
 				>
 					<PasteIcon className="mr-2 h-4 w-4" />
-					Paste
+					{t("Paste")}
 				</ContextMenuItem>
 				{state.clipboard !== null && (
 					<ContextMenuItem onSelect={actions.cancelClipboard}>
-						Cancel Move
+						{t("Cancel Move")}
 					</ContextMenuItem>
 				)}
 				<ContextMenuSeparator />
@@ -156,7 +158,7 @@ export function MediaLibraryContextMenu({
 					disabled={!hasSingleSelection}
 					onSelect={handleProperties}
 				>
-					Properties
+					{t("Properties")}
 				</ContextMenuItem>
 			</ContextMenuContent>
 		</ContextMenu>

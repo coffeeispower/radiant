@@ -12,6 +12,7 @@ import {
 } from "@dnd-kit/core"
 import { Result } from "@effect-atom/atom-react"
 import { MediaNode } from "@radiant/client"
+import { useTranslations } from "next-intl"
 import { Option } from "effect"
 import { useCallback, useEffect, useRef, useState } from "react"
 
@@ -36,6 +37,7 @@ interface MediaLibraryTreeProps {
 }
 
 export function MediaLibraryTree({ state, actions, onCreateFolder, className }: MediaLibraryTreeProps) {
+	const t = useTranslations()
 	const containerRef = useRef<HTMLDivElement>(null)
 	const [isDraggingExternal, setIsDraggingExternal] = useState(false)
 	const [externalDropTargetId, setExternalDropTargetId] =
@@ -306,7 +308,7 @@ export function MediaLibraryTree({ state, actions, onCreateFolder, className }: 
 									<UploadIcon className="h-8 w-8" />
 								</div>
 								<p className="text-sm font-bold text-black/40">
-									Drop audio files here or use Upload
+									{t("Drop audio files here or use Upload")}
 								</p>
 							</div>
 						)}
@@ -333,7 +335,7 @@ export function MediaLibraryTree({ state, actions, onCreateFolder, className }: 
 					<div className="flex flex-col items-center gap-2">
 						<UploadIcon className="h-8 w-8" />
 						<span className="text-sm font-bold text-signal-warm">
-							Drop files to upload
+							{t("Drop files to upload")}
 						</span>
 					</div>
 				</div>

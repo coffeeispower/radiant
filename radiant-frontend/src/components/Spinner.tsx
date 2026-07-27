@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
 import { cn } from "@/utils/cn"
@@ -11,6 +12,7 @@ interface SpinnerProps {
 }
 
 export function Spinner({ className }: SpinnerProps) {
+	const t = useTranslations()
 	const [mounted, setMounted] = useState(false)
 	const [frame, setFrame] = useState(0)
 
@@ -25,7 +27,7 @@ export function Spinner({ className }: SpinnerProps) {
 	if (!mounted) return null
 
 	return (
-		<span className={cn("font-mono text-sm select-none", className)} aria-label="Loading">
+		<span className={cn("font-mono text-sm select-none", className)} aria-label={t("Loading")}>
 			{DOTS[frame]}
 		</span>
 	)

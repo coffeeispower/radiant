@@ -181,12 +181,12 @@ export function WeekCalendar(props: PropsWithoutRef<{radioAtom: GetRadioAtom, cl
 					</ScrollArea>
 				) : (
 					<div className="flex flex-col items-center justify-center py-12 text-center">
-						<p className="text-sm font-bold text-black/60">Failed to load schedule</p>
+						<p className="text-sm font-bold text-black/60">{t("Failed to load schedule")}</p>
 						<button
 							className="mt-2 text-sm font-bold text-signal-warm hover:underline"
 							onClick={() => window.location.reload()}
 						>
-							Retry
+							{t("Retry")}
 						</button>
 					</div>
 				)}
