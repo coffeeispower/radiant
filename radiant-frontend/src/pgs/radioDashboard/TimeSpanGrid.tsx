@@ -14,6 +14,7 @@ type TimeSpanGridProps = {
 	readonly week: WeekInfo
 	readonly displayDayDuration: number
 	readonly tickCount: number
+	readonly rowHeight: number
 	readonly days: ReadonlyArray<{ date: Time; dayIndex: number }>
 	readonly gridRef: React.RefObject<HTMLDivElement | null>
 }
@@ -26,7 +27,7 @@ function formatDayDate(date: Time): string {
 }
 
 export function TimeSpanGrid(props: TimeSpanGridProps): JSX.Element {
-	const { week, displayDayDuration, tickCount, days, gridRef } = props
+	const { week, displayDayDuration, tickCount, rowHeight, days, gridRef } = props
 	const t = useTranslations()
 
 	const skipHour = week.dstSkipPoint.pipe(Option.map(({ point }) => {
@@ -57,6 +58,7 @@ export function TimeSpanGrid(props: TimeSpanGridProps): JSX.Element {
 
 		rows.push(
 			<div key={`time-${i}`} data-time-span={i}
+				style={{ height: rowHeight }}
 				className="flex items-start justify-end pr-2 pt-0.5 font-mono text-[0.65rem] font-bold text-neo-black/60 border-b-2 border-b-neo-black/20 border-r-2 border-r-neo-black/20 bg-neo-paper"
 			>
 				{isDstBoundary && (
@@ -76,6 +78,7 @@ export function TimeSpanGrid(props: TimeSpanGridProps): JSX.Element {
 		for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
 			rows.push(
 				<div key={`cell-${i}-${dayIndex}`}
+					style={{ height: rowHeight }}
 					className="border-b-2 border-b-neo-black/20 border-r border-r-neo-black/10 last:border-r-0 bg-neo-paper"
 				/>
 			)
@@ -88,14 +91,14 @@ export function TimeSpanGrid(props: TimeSpanGridProps): JSX.Element {
 			style={{
 				display: "grid",
 				gridTemplateColumns: `${TICK_LABEL_WIDTH} repeat(7, 1fr)`,
-				gridTemplateRows: `auto repeat(${tickCount}, 1fr)`,
+				gridTemplateRows: `auto repeat(${tickCount}, ${rowHeight}px)`,
 			}}
-			className="w-full h-full"
+			className="w-full"
 		>
-			<div className="border-b-3 border-b-neo-black border-r-3 border-r-neo-black bg-neo-paper" />
+			<div className="sticky top-0 z-20 border-b-3 border-b-neo-black border-r-3 border-r-neo-black bg-neo-paper shadow-neo-down shadow-black/20" />
 			{days.map((day, i) => (
 				<div key={i} data-day-col={i}
-					className="flex flex-col items-center justify-center py-1.5 border-b-3 border-b-neo-black border-r-3 border-r-neo-black last:border-r-0 bg-neo-paper  shadow-neo-down shadow-black/20 relative z-10"
+					className="sticky top-0 z-20 flex flex-col items-center justify-center py-1.5 border-b-3 border-b-neo-black border-r-3 border-r-neo-black last:border-r-0 bg-neo-paper shadow-neo-down shadow-black/20 relative"
 				>
 					<span className={`text-[0.65rem] font-bold text-neo-black uppercase tracking-micro leading-none ${tomorrowFont.className}`}>
 						{t(WEEKDAY_KEYS[i])}
