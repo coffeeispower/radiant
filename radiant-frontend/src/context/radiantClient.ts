@@ -2,7 +2,7 @@ import { Atom, AtomHttpApi, Result, useAtomSet } from "@effect-atom/atom-react"
 import { FetchHttpClient } from "@effect/platform"
 import { ApiContract, MediaNode, Radio, Schedule, User } from "@radiant/client"
 import { Option } from "effect"
-import { useMemo } from "react"
+import { useCallback, useMemo } from "react"
 
 export const radioListReactivityKey = "radio:list"
 export const currentUserReactivityKey = "user:current"
@@ -104,18 +104,6 @@ export function useMediaLibraryMutations(radioId: Radio.RadioId) {
 	const deleteNode = useAtomSet(deleteNodeAtom, { mode: "promiseExit" })
 	const uploadFileMutate = useAtomSet(uploadFileAtom, { mode: "promiseExit" })
 
-	const uploadFile = useMemo(() => {
-		return (file: File, parentId: MediaNode.MediaNodeId | null) => {
-			const formData = new FormData()
-			formData.append("file", file)
-			return uploadFileMutate({
-				payload: formData as any,
-				path: { radioId },
-				urlParams: { name: file.name, parentId: parentId ?? undefined },
-				reactivityKeys: [treeKey],
-			})
-		}
-	}, [radioId, treeKey, uploadFileMutate])
 
 	return {
 		createFolder: (name: string, parentId: MediaNode.MediaNodeId | null) =>
@@ -141,6 +129,15 @@ export function useMediaLibraryMutations(radioId: Radio.RadioId) {
 				path: { radioId, nodeId },
 				reactivityKeys: [treeKey],
 			}),
-		uploadFile,
+		uploadFile: (file: File, parentId: MediaNode.MediaNodeId | null) => {
+			const formData = new FormData()
+			formData.append("file", file)
+			return uploadFileMutate({
+				payload: formData,
+				path: { radioId },
+				urlParams: { name: file.name, parentId: parentId ?? undefined },
+				reactivityKeys: [treeKey],
+			})
+		},
 	}
 }
