@@ -1,10 +1,12 @@
 import { FileSystem, HttpApiBuilder, HttpServerResponse } from "@effect/platform"
 import * as RadiantClient from "@radiant/client"
 import { CurrentUser } from "@radiant/client/contract"
-import { Effect, Stream } from "effect"
+import { Effect, Schema, Stream } from "effect"
 
 import { RadioManager } from "../services"
 import { MediaLibraryService } from "../services/MediaLibraryService"
+import { ParseError } from "effect/ParseResult"
+import { MediaLibraryInvalidAudioFileError } from "@radiant/client/lib/MediaLibrary"
 
 const ensureRadioOwner = Effect.fn("http.mediaLibrary.ensureRadioOwner")(function* (
 	radioId: RadiantClient.Radio.RadioId,
@@ -35,13 +37,17 @@ export const mediaLibraryGroupLive = HttpApiBuilder.group(
 
 					const mediaLibrary = yield* MediaLibraryService
 					const fs = yield* FileSystem.FileSystem
-					const content = Stream.fromEffect(fs.readFile(payload.file.path))
+					let file = payload.file[0];
+					if(!file) {
+						return yield* new MediaLibraryInvalidAudioFileError({message: "File missing from the request"});
+					}
+					const content = Stream.fromEffect(fs.readFile(file.path))
 
 					return yield* mediaLibrary.uploadAudioFile({
 						radioId,
 						parentId: urlParams.parentId ?? null,
-						name: payload.file.name,
-						contentType: payload.file.contentType,
+						name: file.name,
+						contentType: file.contentType,
 						content,
 					})
 				}),
