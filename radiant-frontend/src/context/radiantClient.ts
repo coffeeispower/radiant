@@ -64,6 +64,7 @@ export function useGenerateScheduleBlocksAtom(
 					rangeStart,
 					rangeEnd,
 				},
+				reactivityKeys: ["radio:"+radioId+":schedule:listBlocks"]
 			}),
 		[radioId, rangeStart, rangeEnd],
 	)
