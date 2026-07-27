@@ -131,7 +131,7 @@ export function useMediaLibraryMutations(radioId: Radio.RadioId) {
 			}),
 		uploadFile: (file: File, parentId: MediaNode.MediaNodeId | null) => {
 			const formData = new FormData()
-			formData.append("file", file)
+			formData.set("file", file)
 			return uploadFileMutate({
 				payload: formData,
 				path: { radioId },
