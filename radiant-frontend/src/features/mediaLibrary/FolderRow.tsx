@@ -18,6 +18,7 @@ interface FolderRowProps {
 	isFocused: boolean
 	isRenaming: boolean
 	isDropTarget: boolean
+	isPendingMove: boolean
 	actions: MediaTreeActions
 }
 
@@ -28,6 +29,7 @@ export function FolderRow({
 	isFocused,
 	isRenaming,
 	isDropTarget,
+	isPendingMove,
 	actions,
 }: FolderRowProps) {
 	const inputRef = useRef<HTMLInputElement>(null)
@@ -81,7 +83,8 @@ export function FolderRow({
 			className={cn(
 				"flex cursor-pointer select-none items-center gap-2 border-2 border-transparent px-2 py-1",
 				groteskFont.className,
-				isDragging && "opacity-50",
+				isPendingMove && "opacity-0",
+				!isPendingMove && isDragging && "opacity-50",
 				isDropTarget && "border-signal-warm",
 				isSelected && "bg-signal-warm/30 border-signal-warm",
 				isFocused && !isSelected && "bg-surface-muted",
@@ -119,6 +122,8 @@ export function FolderRow({
 					onKeyDown={handleRenameKeyDown}
 					onBlur={handleRenameBlur}
 					onClick={(e) => e.stopPropagation()}
+					onPointerDown={(e) => e.stopPropagation()}
+					onMouseDown={(e) => e.stopPropagation()}
 				/>
 			) : (
 				<span className="min-w-0 flex-1 truncate text-sm font-bold">

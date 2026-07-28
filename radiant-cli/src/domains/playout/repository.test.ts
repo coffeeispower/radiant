@@ -134,7 +134,6 @@ const oneOffDraft = (startsAtIso: string, endMinuteOfDay: number) => {
 			playlistId: null,
 			durationMs: 60_000,
 		},
-		playbackMode: "continue" as const,
 		playlistFillMode: null,
 		startsAt,
 		date: {
@@ -162,8 +161,7 @@ it.layer(testLayer)(({ scoped }) => {
 					targetType: "audio_file",
 					playlistId: null,
 					mediaNodeId,
-					playlistFillMode: null,
-					playbackMode: "continue",
+				playlistFillMode: null,
 				}),
 			)
 
@@ -189,8 +187,7 @@ it.layer(testLayer)(({ scoped }) => {
 					targetType: "audio_file",
 					playlistId: null,
 					mediaNodeId,
-					playlistFillMode: null,
-					playbackMode: "continue",
+				playlistFillMode: null,
 				}),
 			)
 
@@ -203,7 +200,6 @@ it.layer(testLayer)(({ scoped }) => {
 						playlistId: null,
 						durationMs: 60_000,
 					},
-					playbackMode: "continue",
 					playlistFillMode: null,
 					weekday: 1,
 					startMinuteOfDay: 10 * 60 + 30,
@@ -229,8 +225,7 @@ it.layer(testLayer)(({ scoped }) => {
 					targetType: "audio_file",
 					playlistId: null,
 					mediaNodeId,
-					playlistFillMode: null,
-					playbackMode: "continue",
+				playlistFillMode: null,
 				}),
 			)
 
@@ -256,8 +251,7 @@ it.layer(testLayer)(({ scoped }) => {
 					targetType: "audio_file",
 					playlistId: null,
 					mediaNodeId,
-					playlistFillMode: null,
-					playbackMode: "continue",
+				playlistFillMode: null,
 				}),
 			)
 

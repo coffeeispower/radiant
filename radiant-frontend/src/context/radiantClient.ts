@@ -141,3 +141,6 @@ export function useMediaLibraryMutations(radioId: Radio.RadioId) {
 		},
 	}
 }
+
+export type MediaLibraryMutations = ReturnType<typeof useMediaLibraryMutations>;
+export type MediaLibraryTreeAtom = ReturnType<typeof useMediaLibraryTreeAtom>;

@@ -38,11 +38,6 @@ const targetTypeOptions = [
 	{ value: "playlist", label: "Playlist" },
 ] as const
 
-const playbackModeOptions = [
-	{ value: "continue", label: "Continue" },
-	{ value: "restart", label: "Restart" },
-] as const
-
 const playlistFillModeOptions = [
 	{ value: "once", label: "Once" },
 	{ value: "loop", label: "Loop" },
@@ -98,12 +93,6 @@ export const promptBlockDraft = (radio: RadioRow) =>
 
 		const target = yield* promptTarget(radio, targetType)
 
-		const playbackMode = yield* prompter.select<Playout.BlockPlaybackMode>({
-			message: "How should playback behave when the block starts?",
-			options: [...playbackModeOptions],
-			initialValue: "continue",
-		})
-
 		const playlistFillMode =
 			targetType === "playlist"
 				? yield* prompter.select<Playout.PlaylistFillMode>({
@@ -154,15 +143,14 @@ export const promptBlockDraft = (radio: RadioRow) =>
 							})
 							.pipe(Effect.map((value) => parseMinuteOfDay(value)!))
 
-			return {
-				blockKind,
-				target,
-				playbackMode,
-				playlistFillMode,
-				weekday,
-				startMinuteOfDay,
-				endMinuteOfDay,
-			} satisfies BlockDraft
+		return {
+			blockKind,
+			target,
+			playlistFillMode,
+			weekday,
+			startMinuteOfDay,
+			endMinuteOfDay,
+		} satisfies BlockDraft
 		}
 
 		const date = yield* prompter.text({
@@ -237,7 +225,6 @@ export const promptBlockDraft = (radio: RadioRow) =>
 		return {
 			blockKind,
 			target,
-			playbackMode,
 			playlistFillMode,
 			startsAt: resolvedStart.startsAt,
 			date: resolvedStart.date,

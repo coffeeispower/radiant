@@ -23,10 +23,6 @@ export const scheduleWeeklyBlocks = pgTable("schedule_weekly_blocks", {
 	playlistId: playlistIdType().references(() => playlists.id, { onDelete: "restrict" }),
 	mediaNodeId: mediaNodeIdType().references(() => mediaNodes.id, { onDelete: "restrict" }),
 	playlistFillMode: text({ enum: ["once", "loop"] }).$type<Playout.PlaylistFillMode>(),
-	playbackMode: text({ enum: ["continue", "restart"] })
-		.$type<Playout.BlockPlaybackMode>()
-		.notNull()
-		.default("continue"),
 	modeAfterPlayback: text({ enum: ["overlay"] })
 		.$type<Playout.ModeAfterPlayback>()
 		.notNull()

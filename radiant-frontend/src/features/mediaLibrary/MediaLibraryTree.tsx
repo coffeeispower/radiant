@@ -43,8 +43,16 @@ export function MediaLibraryTree({ state, actions, onCreateFolder, className }: 
 	const [externalDropTargetId, setExternalDropTargetId] =
 		useState<MediaNode.MediaNodeId | null>(null)
 	const [draggedNode, setDraggedNode] = useState<VisibleNode | null>(null)
+	const [pendingMoveNodeId, setPendingMoveNodeId] = useState<MediaNode.MediaNodeId | null>(null)
 	const [mounted, setMounted] = useState(false)
 	useEffect(() => { setMounted(true) }, [])
+
+	// Clear pending move when tree data updates (server responded with new tree)
+	useEffect(() => {
+		if (pendingMoveNodeId !== null) {
+			setPendingMoveNodeId(null)
+		}
+	}, [state.flatVisibleNodes])
 
 	useEffect(() => {
 		const links: HTMLLinkElement[] = []
@@ -95,6 +103,7 @@ export function MediaLibraryTree({ state, actions, onCreateFolder, className }: 
 			}
 
 			if (draggedNode.id === targetParentId) return
+			setPendingMoveNodeId(draggedNode.id)
 			actions.moveNode(draggedNode.id, targetParentId)
 		},
 		[actions],
@@ -298,6 +307,7 @@ export function MediaLibraryTree({ state, actions, onCreateFolder, className }: 
 									state={state}
 									actions={actions}
 									dropTargetId={externalDropTargetId}
+									isPendingMove={node.id === pendingMoveNodeId}
 								/>
 							</div>
 						))}

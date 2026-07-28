@@ -2,6 +2,8 @@ import { DateTime, Duration, Option, Schema } from "effect";
 import { JSX } from "react";
 
 const TICKS_SPACING_MIN_EM = 4;
+/** Weekday numbers following JS/Effect convention: 0=Sunday, 1=Monday, ..., 6=Saturday.
+ *  Used with Effect's `DateTime.setParts` which expects this numbering. */
 enum WeekDay {
 	Sunday = 0,
 	Monday,
@@ -32,6 +34,10 @@ export const WeekInfo = Schema.Struct({
 export type DSTSkipPoint = typeof DSTSkipPoint.Type;
 export type WeekInfo = typeof WeekInfo.Type;
 
+/** Detects if a DST transition falls within the given week.
+ *  Returns the exact hour when clocks change, and whether it's a "fall back"
+ *  (positive: hour repeats, calendar has 25 hours) or "spring forward"
+ *  (negative: hour skipped, calendar has 23 hours) transition. */
 export function getDSTSkipPoint(week: {weekStart: Time, weekEnd: Time}): Option.Option<DSTSkipPoint> {
 	const startOffset = DateTime.zonedOffset(week.weekStart)
 	const endOffset = DateTime.zonedOffset(week.weekEnd)
@@ -82,6 +88,8 @@ export function getDSTSkipPoint(week: {weekStart: Time, weekEnd: Time}): Option.
 	return Option.none()
 }
 
+/** Builds a WeekInfo for the Monday-to-Sunday week containing the given date,
+ *  including detection of any DST transition within that week. */
 export function makeWeekInfo(week: Time): WeekInfo {
 	const weekStart = DateTime.setParts(week, {
 		weekDay: WeekDay.Monday,

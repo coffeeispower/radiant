@@ -1,19 +1,12 @@
 "use client"
 
 import { DateTime, Option } from "effect"
-import { JSX, useMemo } from "react"
+import { useMemo } from "react"
 import { useTranslations } from "next-intl"
 import { Schedule } from "@radiant/client"
 import { type WeekInfo, type DSTSkipPoint } from "./weekCalendarLayout"
+import { type RenderedBlock, buildBlocksByDay } from "./blockLayout"
 import { ScheduleBlockCard } from "./ScheduleBlockCard"
-
-export type RenderedBlock = {
-	readonly startMinuteOfDay: number
-	readonly endMinuteOfDay: number
-	readonly target: Schedule.ScheduleTarget
-	readonly playbackMode: Schedule.BlockPlaybackMode
-	readonly blockKind: "weekly" | "one-off"
-}
 
 type BlockOverlayProps = {
 	readonly week: WeekInfo
@@ -26,63 +19,8 @@ type BlockOverlayProps = {
 	readonly colMeasurements: ReadonlyArray<{ left: number; width: number }>
 }
 
-const WEEKDAY_TO_INDEX: Record<number, number> = {
-	1: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6,
-}
-
 const WEEKDAY_TO_JS_WEEKDAY: Record<number, number> = {
 	0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 0,
-}
-
-function toMinuteOfDay(date: DateTime.Zoned): number {
-	const parts = DateTime.toParts(date)
-	return parts.hours * 60 + parts.minutes
-}
-
-function splitOneOffBlock(
-	block: Schedule.ScheduleOneOffBlock,
-	timezone: string,
-): ReadonlyArray<{ startMinuteOfDay: number; endMinuteOfDay: number; weekday: number }> {
-	const zone = DateTime.zoneUnsafeMakeNamed(timezone)
-	const startZoned = DateTime.setZone(block.startsAt, zone)
-	const endZoned = DateTime.setZone(block.endsAt, zone)
-
-	const segments: { startMinuteOfDay: number; endMinuteOfDay: number; weekday: number }[] = []
-	let cursor = startZoned
-
-	while (DateTime.lessThan(cursor, endZoned)) {
-		const cursorMinute = toMinuteOfDay(cursor)
-		const cursorParts = DateTime.toParts(cursor)
-		const weekday = cursorParts.weekDay
-		const nextMidnight = DateTime.unsafeMakeZoned(
-			{
-				year: cursorParts.year,
-				month: cursorParts.month,
-				day: cursorParts.day,
-				hours: 0,
-				minutes: 0,
-				seconds: 0,
-				millis: 0,
-			},
-			{ timeZone: timezone, disambiguation: "compatible" },
-		)
-		const nextMidnightDay = DateTime.add(nextMidnight, { days: 1 })
-
-		const segmentEnd = DateTime.min(endZoned, nextMidnightDay)
-		const endMinute = DateTime.lessThan(segmentEnd, nextMidnightDay)
-			? toMinuteOfDay(segmentEnd)
-			: 24 * 60
-
-		segments.push({
-			startMinuteOfDay: cursorMinute,
-			endMinuteOfDay: endMinute,
-			weekday,
-		})
-
-		cursor = nextMidnightDay
-	}
-
-	return segments
 }
 
 function isDSTDay(dayIndex: number, dstSkipPoint: Option.Option<DSTSkipPoint>): boolean {
@@ -115,6 +53,7 @@ function getDSTSkipRegion(
 	return null
 }
 
+/** Converts a minute-of-day to a pixel Y coordinate using the row measurements. */
 function minuteToPixel(
 	minute: number,
 	spanDurationMinutes: number,
@@ -126,56 +65,21 @@ function minuteToPixel(
 	return rowMeasurements[clampedRow].top + fraction * rowMeasurements[clampedRow].height
 }
 
-export function BlockOverlay(props: BlockOverlayProps): JSX.Element {
+export function BlockOverlay(props: BlockOverlayProps) {
 	const { week, weeklyRules, weeklyOccurrences, oneOffBlocks, timezone, displayDayDuration, rowMeasurements, colMeasurements } = props
 	const t = useTranslations()
 
-	const blocksByDay = useMemo(() => {
-		const byDay: RenderedBlock[][] = Array.from({ length: 7 }, () => [])
-
-		const ruleMap = new Map<string, Schedule.ScheduleWeeklyBlock>()
-		for (const rule of weeklyRules) {
-			ruleMap.set(rule.id, rule)
-		}
-
-		for (const occ of weeklyOccurrences) {
-			const dayIndex = WEEKDAY_TO_INDEX[occ.weekday]
-			if (dayIndex === undefined) continue
-			const rule = ruleMap.get(occ.blockId)
-			if (!rule) continue
-			byDay[dayIndex].push({
-				startMinuteOfDay: occ.startMinuteOfDay,
-				endMinuteOfDay: occ.endMinuteOfDay,
-				target: rule.target,
-				playbackMode: rule.playbackMode,
-				blockKind: "weekly",
-			})
-		}
-
-		for (const block of oneOffBlocks) {
-			const segments = splitOneOffBlock(block, timezone)
-			for (const seg of segments) {
-				const dayIndex = WEEKDAY_TO_INDEX[seg.weekday]
-				if (dayIndex === undefined) continue
-				byDay[dayIndex].push({
-					startMinuteOfDay: seg.startMinuteOfDay,
-					endMinuteOfDay: seg.endMinuteOfDay,
-					target: block.target,
-					playbackMode: block.playbackMode,
-					blockKind: "one-off",
-				})
-			}
-		}
-
-		return byDay
-	}, [weeklyRules, weeklyOccurrences, oneOffBlocks, timezone])
+	const blocksByDay = useMemo(
+		() => buildBlocksByDay(weeklyRules, weeklyOccurrences, oneOffBlocks, timezone),
+		[weeklyRules, weeklyOccurrences, oneOffBlocks, timezone],
+	)
 
 	if (rowMeasurements.length === 0 || colMeasurements.length === 0) return <></>
 
 	const spanDurationMinutes = (displayDayDuration * 60) / rowMeasurements.length
 
 	return (
-		<div className="absolute inset-0 pointer-events-none">
+		<div className="absolute inset-0 z-10">
 			{blocksByDay.map((blocks, dayIndex) => {
 				const col = colMeasurements[dayIndex]
 				if (!col) return null
@@ -209,7 +113,8 @@ export function BlockOverlay(props: BlockOverlayProps): JSX.Element {
 								<ScheduleBlockCard
 									key={`${block.blockKind}-${i}`}
 									block={block}
-									style={{ position: "absolute", top, height, left: 2, right: 2 }}
+									height={height}
+									style={{ position: "absolute", top, left: 2, right: 2 }}
 								/>
 							)
 						})}

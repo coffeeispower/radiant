@@ -141,7 +141,6 @@ it.layer(Layer.mergeAll(apiLayer, userRepoLayer, sessionLayer, dbLayer))(({ scop
 						weekday: 1,
 						startMinuteOfDay: 600,
 						endMinuteOfDay: 660,
-						playbackMode: "continue",
 						modeAfterPlayback: "overlay",
 						target: {
 							targetType: "playlist",
@@ -193,7 +192,6 @@ it.layer(Layer.mergeAll(apiLayer, userRepoLayer, sessionLayer, dbLayer))(({ scop
 						blockKind: "one-off",
 						startsAt: utc("2025-01-06T10:00:00Z"),
 						endsAt: utc("2025-01-06T10:30:00Z"),
-						playbackMode: "continue",
 						modeAfterPlayback: "overlay",
 						target: {
 							targetType: "audio_file",
@@ -213,7 +211,6 @@ it.layer(Layer.mergeAll(apiLayer, userRepoLayer, sessionLayer, dbLayer))(({ scop
 							blockKind: "one-off",
 							startsAt: utc("2025-01-06T10:15:00Z"),
 							endsAt: utc("2025-01-06T10:45:00Z"),
-							playbackMode: "continue",
 							modeAfterPlayback: "overlay",
 							target: {
 								targetType: "audio_file",
@@ -241,7 +238,6 @@ it.layer(Layer.mergeAll(apiLayer, userRepoLayer, sessionLayer, dbLayer))(({ scop
 							blockKind: "one-off",
 							startsAt: utc("2025-01-06T10:15:00Z"),
 							endsAt: utc("2025-01-06T10:45:00Z"),
-							playbackMode: "continue",
 							modeAfterPlayback: "overlay",
 							target: {
 								targetType: "audio_file",

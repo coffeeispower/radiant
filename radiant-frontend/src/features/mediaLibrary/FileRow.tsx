@@ -16,10 +16,11 @@ interface FileRowProps {
  isSelected: boolean
  isFocused: boolean
  isRenaming: boolean
+ isPendingMove: boolean
 	actions: MediaTreeActions
 }
 
-export function FileRow({ node, isSelected, isFocused, isRenaming, actions }: FileRowProps) {
+export function FileRow({ node, isSelected, isFocused, isRenaming, isPendingMove, actions }: FileRowProps) {
 	const inputRef = useRef<HTMLInputElement>(null)
 	const [renameValue, setRenameValue] = useState(node.name)
 
@@ -62,7 +63,8 @@ export function FileRow({ node, isSelected, isFocused, isRenaming, actions }: Fi
 			className={cn(
 				"flex cursor-pointer select-none items-center gap-2 border-2 border-transparent px-2 py-1",
 				groteskFont.className,
-				isDragging && "opacity-50",
+				isPendingMove && "opacity-0",
+				!isPendingMove && isDragging && "opacity-50",
 				isSelected && "bg-signal-warm/30 border-signal-warm",
 				isFocused && !isSelected && "bg-surface-muted",
 				!isSelected && !isFocused && "hover:bg-surface-muted/50",
@@ -85,6 +87,8 @@ export function FileRow({ node, isSelected, isFocused, isRenaming, actions }: Fi
 					onKeyDown={handleRenameKeyDown}
 					onBlur={handleRenameBlur}
 					onClick={(e) => e.stopPropagation()}
+					onMouseDown={(e) => e.stopPropagation()}
+					onPointerDown={(e) => e.stopPropagation()}
 				/>
 			) : (
 				<span className="min-w-0 flex-1 truncate text-sm font-bold">

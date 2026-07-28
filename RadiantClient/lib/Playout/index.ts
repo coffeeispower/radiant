@@ -8,8 +8,6 @@ import * as User from "../User"
 
 export const ScheduleTargetType = Schedule.ScheduleTargetType
 export type ScheduleTargetType = Schedule.ScheduleTargetType
-export const BlockPlaybackMode = Schedule.BlockPlaybackMode
-export type BlockPlaybackMode = Schedule.BlockPlaybackMode
 export const ModeAfterPlayback = Schedule.ModeAfterPlayback
 export type ModeAfterPlayback = Schedule.ModeAfterPlayback
 export const PlaylistFillMode = Schedule.PlaylistFillMode

@@ -9,6 +9,7 @@ export function Panel(
 		title: string
 		kicker?: string
 		className?: string
+		contentClassName?: string
 		headerActions?: React.ReactNode
 	}>,
 ) {
@@ -31,7 +32,7 @@ export function Panel(
 				</div>
 				{props.headerActions}
 			</CardHeader>
-			<CardContent className="p-5">{props.children}</CardContent>
+			<CardContent className={cn("p-5", props.contentClassName)}>{props.children}</CardContent>
 		</Card>
 	)
 }

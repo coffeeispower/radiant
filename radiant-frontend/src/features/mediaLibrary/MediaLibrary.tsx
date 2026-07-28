@@ -24,18 +24,17 @@ import { PropertiesDialog } from "./PropertiesDialog"
 import { NewFolderIcon, UploadIcon } from "./MediaLibraryIcons"
 import { useMediaTree } from "./useMediaTree"
 import { MAX_NODE_NAME_LENGTH } from "./types"
-import { useMediaLibraryTreeAtom } from "@/context/radiantClient"
+import { useRadioDashboard } from "@/pgs/radioDashboard/RadioManagementDashboardRoot"
 
 interface MediaLibraryProps {
-	radioId: Radio.RadioId
 	className?: string
 }
 
-export function MediaLibrary({ radioId, className }: MediaLibraryProps) {
+export function MediaLibrary({ className }: MediaLibraryProps) {
 	const t = useTranslations()
+	const { radio, mediaTreeAtom } = useRadioDashboard()
 	const fileInputRef = useRef<HTMLInputElement>(null)
-	const treeAtom = useMediaLibraryTreeAtom(radioId)
-	const tree = useMediaTree(radioId, treeAtom)
+	const tree = useMediaTree(radio.id, mediaTreeAtom)
 
 	const [isFolderDialogOpen, setIsFolderDialogOpen] = useState(false)
 	const [newFolderParentId, setNewFolderParentId] =

@@ -122,7 +122,7 @@ export function CreateRadioDialog({ trigger }: CreateRadioDialogProps) {
 				<DialogHeader>
 					<DialogTitle>{t("Create radio")}</DialogTitle>
 					<DialogDescription>
-						{t("Define the station name and base configuration You can adjust the rest later in the radio console.")}
+						{t("Define the station name and base configuration You can adjust the rest later in the radio console")}
 					</DialogDescription>
 				</DialogHeader>
 

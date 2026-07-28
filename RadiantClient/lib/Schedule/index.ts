@@ -11,9 +11,6 @@ import * as RadioErrors from "../Radio/errors"
 export const ScheduleTargetType = Schema.Literal("playlist", "audio_file")
 export type ScheduleTargetType = typeof ScheduleTargetType.Type
 
-export const BlockPlaybackMode = Schema.Literal("continue", "restart")
-export type BlockPlaybackMode = typeof BlockPlaybackMode.Type
-
 export const ModeAfterPlayback = Schema.Literal("overlay")
 export type ModeAfterPlayback = typeof ModeAfterPlayback.Type
 
@@ -65,7 +62,6 @@ export type OneOffTiming = typeof OneOffTiming.Type
 
 const ScheduleBlockMetadata = {
 	radioId: Radio.RadioId,
-	playbackMode: BlockPlaybackMode,
 	modeAfterPlayback: ModeAfterPlayback.pipe(Schema.optionalWith({ default: () => "overlay" })),
 	createdAt: Schema.DateTimeUtc,
 	updatedAt: Schema.DateTimeUtc,
@@ -95,7 +91,6 @@ export type ScheduleBlock = typeof ScheduleBlock.Type
 
 export const CreateWeeklyBlock = Schema.Struct({
 	target: ScheduleTarget,
-	playbackMode: BlockPlaybackMode,
 	modeAfterPlayback: ModeAfterPlayback.pipe(Schema.optionalWith({ default: () => "overlay" })),
 	...WeeklyTiming.fields,
 })
@@ -103,7 +98,6 @@ export type CreateWeeklyBlock = typeof CreateWeeklyBlock.Type
 
 export const CreateOneOffBlock = Schema.Struct({
 	target: ScheduleTarget,
-	playbackMode: BlockPlaybackMode,
 	modeAfterPlayback: ModeAfterPlayback.pipe(Schema.optionalWith({ default: () => "overlay" })),
 	...OneOffTiming.fields,
 })
@@ -117,7 +111,6 @@ export type CreateScheduleBlock = typeof CreateScheduleBlock.Type
 
 export const UpdateWeeklyBlock = Schema.Struct({
 	target: Schema.optional(ScheduleTarget),
-	playbackMode: Schema.optional(BlockPlaybackMode),
 	modeAfterPlayback: Schema.optional(ModeAfterPlayback),
 	weekday: Schema.optional(Weekday),
 	startMinuteOfDay: Schema.optional(MinuteOfDay),
@@ -126,7 +119,6 @@ export const UpdateWeeklyBlock = Schema.Struct({
 export type UpdateWeeklyBlock = typeof UpdateWeeklyBlock.Type
 export const UpdateOneOffBlock = Schema.Struct({
 	target: Schema.optional(ScheduleTarget),
-	playbackMode: Schema.optional(BlockPlaybackMode),
 	modeAfterPlayback: Schema.optional(ModeAfterPlayback),
 	startsAt: Schema.optional(Schema.DateTimeUtc),
 	endsAt: Schema.optional(Schema.DateTimeUtc),

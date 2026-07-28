@@ -20,7 +20,6 @@ export type BlockTargetSelection =
 export type WeeklyBlockDraft = {
 	readonly blockKind: "weekly"
 	readonly target: BlockTargetSelection
-	readonly playbackMode: Playout.BlockPlaybackMode
 	readonly playlistFillMode: Playout.PlaylistFillMode | null
 	readonly weekday: number
 	readonly startMinuteOfDay: number
@@ -30,7 +29,6 @@ export type WeeklyBlockDraft = {
 export type OneOffBlockDraft = {
 	readonly blockKind: "one-off"
 	readonly target: BlockTargetSelection
-	readonly playbackMode: Playout.BlockPlaybackMode
 	readonly playlistFillMode: Playout.PlaylistFillMode | null
 	readonly startsAt: DateTime.Zoned
 	readonly date: {

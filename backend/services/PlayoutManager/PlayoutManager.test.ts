@@ -237,7 +237,7 @@ const seedAudioFileNode = (args: {
 const seedOneOffBlock = (startsAtIso: string) =>
 	Drizzle.pipe(
 		Effect.flatMap((db) =>
-			Effect.promise(() =>
+				Effect.promise(() =>
 				db.insert(scheduleOneOffBlocks).values({
 					id: "sob_1",
 					radioId,
@@ -247,7 +247,6 @@ const seedOneOffBlock = (startsAtIso: string) =>
 					playlistId: null,
 					mediaNodeId,
 					playlistFillMode: null,
-					playbackMode: "continue",
 					modeAfterPlayback: "overlay",
 				}),
 			),
@@ -261,7 +260,7 @@ const seedOneOffBlockForNode = (args: {
 }) =>
 	Drizzle.pipe(
 		Effect.flatMap((db) =>
-			Effect.promise(() =>
+				Effect.promise(() =>
 				db.insert(scheduleOneOffBlocks).values({
 					id: args.id,
 					radioId,
@@ -271,7 +270,6 @@ const seedOneOffBlockForNode = (args: {
 					playlistId: null,
 					mediaNodeId: args.mediaNodeId,
 					playlistFillMode: null,
-					playbackMode: "continue",
 					modeAfterPlayback: "overlay",
 				}),
 			),
@@ -292,7 +290,6 @@ const seedWeeklyBlock = () =>
 					playlistId: null,
 					mediaNodeId,
 					playlistFillMode: null,
-					playbackMode: "continue",
 				}),
 			),
 		),
