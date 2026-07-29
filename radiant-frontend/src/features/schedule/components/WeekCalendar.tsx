@@ -8,13 +8,13 @@ import { Button } from "@/components/Button";
 import { useTranslations } from "next-intl";
 import { useAtomValue, Result, useAtomRefresh } from "@effect-atom/atom-react";
 import { useRadioDashboard } from "@/pgs/radioDashboard/RadioManagementDashboardRoot";
-import { makeWeekInfo, type Time } from "./weekCalendarLayout";
+import { makeWeekInfo, type Time } from "../utils/weekCalendarLayout";
 
 import { cn } from "@/utils/cn";
 import { TimeSpanGrid } from "./TimeSpanGrid";
 import { BlockOverlay } from "./BlockOverlay";
-import { useWeekCalendarZoom, DEFAULT_PIXELS_PER_MINUTE, MIN_PIXELS_PER_MINUTE, MAX_PIXELS_PER_MINUTE, ZOOM_FACTOR } from "./useWeekCalendarZoom";
-import { useGridMeasurement } from "./useGridMeasurement";
+import { useWeekCalendarZoom, DEFAULT_PIXELS_PER_MINUTE, MIN_PIXELS_PER_MINUTE, MAX_PIXELS_PER_MINUTE, ZOOM_FACTOR } from "../hooks/useWeekCalendarZoom";
+import { useGridMeasurement } from "../hooks/useGridMeasurement";
 
 function ScheduleLoading() {
 	return (

@@ -8,8 +8,8 @@ import { groteskFont } from "@/lib/fonts"
 import { cn } from "@/utils/cn"
 
 import { ChevronIcon, ClosedFolderIcon, OpenFolderIcon } from "./MediaLibraryIcons"
-import { MediaTreeActions } from "./useMediaTree"
-import { MAX_NODE_NAME_LENGTH, treeIndentStyle, VisibleNode } from "./types"
+import { MediaTreeActions } from "../hooks/useMediaTree"
+import { MAX_NODE_NAME_LENGTH, treeIndentStyle, VisibleNode } from "../types"
 
 interface FolderRowProps {
 	node: VisibleNode

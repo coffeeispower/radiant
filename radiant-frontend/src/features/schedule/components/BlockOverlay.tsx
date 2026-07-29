@@ -4,8 +4,8 @@ import { DateTime, Option } from "effect"
 import { useMemo } from "react"
 import { useTranslations } from "next-intl"
 import { Schedule } from "@radiant/client"
-import { type WeekInfo, type DSTSkipPoint } from "./weekCalendarLayout"
-import { type RenderedBlock, buildBlocksByDay } from "./blockLayout"
+import { type WeekInfo, type DSTSkipPoint } from "../utils/weekCalendarLayout"
+import { type RenderedBlock, buildBlocksByDay } from "../utils/blockLayout"
 import { ScheduleBlockCard } from "./ScheduleBlockCard"
 
 type BlockOverlayProps = {

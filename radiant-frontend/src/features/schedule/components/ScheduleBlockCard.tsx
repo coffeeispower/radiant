@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl"
 import { cn } from "@/utils/cn"
 import { Schedule } from "@radiant/client"
-import { useMediaNodeNameById } from "@/features/mediaLibrary/useMediaNodeNameById"
+import { useMediaNodeNameById } from "@/features/mediaLibrary/hooks/useMediaNodeNameById"
 import styled from "styled-components"
 import { useEffect, useState } from "react"
 

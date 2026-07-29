@@ -8,8 +8,8 @@ import { groteskFont } from "@/lib/fonts"
 import { cn } from "@/utils/cn"
 
 import { MusicFileIcon } from "./MediaLibraryIcons"
-import { MediaTreeActions } from "./useMediaTree"
-import { MAX_NODE_NAME_LENGTH, treeIndentStyle, VisibleNode } from "./types"
+import { MediaTreeActions } from "../hooks/useMediaTree"
+import { MAX_NODE_NAME_LENGTH, treeIndentStyle, VisibleNode } from "../types"
 
 interface FileRowProps {
 	node: VisibleNode

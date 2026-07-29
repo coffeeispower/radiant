@@ -16,8 +16,8 @@ import { Label } from "@/components/label"
 import { useRadioDashboard } from "@/pgs/radioDashboard/RadioManagementDashboardRoot"
 
 import { MusicFileIcon } from "./MediaLibraryIcons"
-import { useCoverArt } from "./useCoverArt"
-import { MediaTreeActions, MediaTreeState } from "./useMediaTree"
+import { useCoverArt } from "../hooks/useCoverArt"
+import { MediaTreeActions, MediaTreeState } from "../hooks/useMediaTree"
 
 interface PropertiesDialogProps {
 	state: MediaTreeState

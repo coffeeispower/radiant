@@ -13,7 +13,7 @@ import {
 	DialogTitle,
 } from "@/components/Dialog"
 
-import { MediaTreeActions, MediaTreeState } from "./useMediaTree"
+import { MediaTreeActions, MediaTreeState } from "../hooks/useMediaTree"
 
 interface DeleteConfirmDialogProps {
 	state: MediaTreeState

@@ -9,7 +9,7 @@ import {
 	useMediaLibraryMutations,
 } from "@/context/radiantClient"
 
-import { EMPTY_SELECTION, SelectionState, VisibleNode } from "./types"
+import { EMPTY_SELECTION, SelectionState, VisibleNode } from "../types"
 
 function flattenTree(
 	nodes: ReadonlyArray<MediaLibrary.MediaLibraryTreeNode>,

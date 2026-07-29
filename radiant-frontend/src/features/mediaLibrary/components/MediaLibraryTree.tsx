@@ -26,8 +26,8 @@ import closedFolderSvg from "@/assets/icons/closed_folder.svg"
 import openFolderSvg from "@/assets/icons/open_folder.svg"
 import musicFileIconSvg from "@/assets/icons/music_file_icon.svg"
 import { TreeNode } from "./TreeNode"
-import { MediaTreeActions, MediaTreeState } from "./useMediaTree"
-import { VisibleNode } from "./types"
+import { MediaTreeActions, MediaTreeState } from "../hooks/useMediaTree"
+import { VisibleNode } from "../types"
 
 interface MediaLibraryTreeProps {
 	state: MediaTreeState

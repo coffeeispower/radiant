@@ -2,7 +2,7 @@
 
 import { DateTime, Duration, Option } from "effect"
 import { JSX } from "react"
-import { type WeekInfo, type Time } from "./weekCalendarLayout"
+import { type WeekInfo, type Time } from "../utils/weekCalendarLayout"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/Tooltip"
 import { useTranslations } from "next-intl"
 import { tomorrowFont } from "@/lib/fonts"

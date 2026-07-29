@@ -19,7 +19,7 @@ import {
 	RenameIcon,
 	UploadIcon,
 } from "./MediaLibraryIcons"
-import { MediaTreeActions, MediaTreeState } from "./useMediaTree"
+import { MediaTreeActions, MediaTreeState } from "../hooks/useMediaTree"
 
 interface MediaLibraryContextMenuProps {
 	children: React.ReactNode

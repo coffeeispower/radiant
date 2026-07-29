@@ -5,8 +5,8 @@ import { Option } from "effect"
 
 import { FileRow } from "./FileRow"
 import { FolderRow } from "./FolderRow"
-import { MediaTreeActions, MediaTreeState } from "./useMediaTree"
-import { VisibleNode } from "./types"
+import { MediaTreeActions, MediaTreeState } from "../hooks/useMediaTree"
+import { VisibleNode } from "../types"
 
 interface TreeNodeProps {
 	node: VisibleNode

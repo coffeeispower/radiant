@@ -5,9 +5,9 @@ import { DateTime } from "effect";
 import { Atom, Result, useAtomValue } from "@effect-atom/atom-react";
 import { Radio } from "@radiant/client";
 import { useGenerateGetRadioAtom, useGenerateScheduleBlocksAtom, useMediaLibraryTreeAtom, ScheduleBlocksAtom, MediaLibraryTreeAtom } from "@/context/radiantClient";
-import { MediaLibrary } from "@/features/mediaLibrary/MediaLibrary";
-import { WeekCalendar } from "@/features/schedule/WeekCalendar";
-import { makeWeekInfo } from "@/features/schedule/weekCalendarLayout";
+import { MediaLibrary } from "@/features/mediaLibrary/components/MediaLibrary";
+import { WeekCalendar } from "@/features/schedule/components/WeekCalendar";
+import { makeWeekInfo } from "@/features/schedule/utils/weekCalendarLayout";
 import { DashboardLoadingScreen } from "./DashboardLoadingScreen";
 import styled from "styled-components";
 
