@@ -13,10 +13,9 @@ interface TreeNodeProps {
 	state: MediaTreeState
 	actions: MediaTreeActions
 	dropTargetId: MediaNode.MediaNodeId | null
-	isPendingMove: boolean
 }
 
-export function TreeNode({ node, state, actions, dropTargetId, isPendingMove }: TreeNodeProps) {
+export function TreeNode({ node, state, actions, dropTargetId }: TreeNodeProps) {
 	const isSelected = state.selection.selectedIds.has(node.id)
 	const isFocused = state.selection.focusedId === node.id
 	const isRenaming = Option.isSome(state.renamingId) && state.renamingId.value === node.id
@@ -33,7 +32,6 @@ export function TreeNode({ node, state, actions, dropTargetId, isPendingMove }: 
 				isFocused={isFocused}
 				isRenaming={isRenaming}
 				isDropTarget={isDropTarget}
-				isPendingMove={isPendingMove}
 				actions={actions}
 			/>
 		)
@@ -45,7 +43,6 @@ export function TreeNode({ node, state, actions, dropTargetId, isPendingMove }: 
 			isSelected={isSelected}
 			isFocused={isFocused}
 			isRenaming={isRenaming}
-			isPendingMove={isPendingMove}
 			actions={actions}
 		/>
 	)

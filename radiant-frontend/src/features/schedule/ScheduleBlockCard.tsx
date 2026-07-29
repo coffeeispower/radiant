@@ -22,9 +22,14 @@ const MIN_HEIGHT_FOR_ALWAYS_VISIBLE_TEXT = 30
 
 const SizedDiv = styled.div<{ $height: number }>`
 	interpolate-size: allow-keywords;
-	max-height: ${({ $height }) => $height}px;
+	height: ${({ $height }) => $height}px;
 	&:hover {
-		max-height: max-content;
+
+		/**
+			* calc-size is an experimental feature but it is the cleanest way to make the block not contract when hovered when the
+		  * height is bigger than the actual content
+		*/
+		height: calc-size(fit-content, max(size, ${({ $height }) => $height}px));
 	}
 `;
 
@@ -60,7 +65,7 @@ export function ScheduleBlockCard(props: {
 				"absolute left-2 right-2 border-3 border-neo-black shadow-neo-badge cursor-default select-none",
 				"duration-150 ease-out",
 				"hover:z-50 group",
-				showTransition ? "transition-[max-height]" : "transition-none",
+				showTransition ? "transition-[height]" : "transition-none",
 				targetTypeStyles[block.target.targetType] ?? UNKNOWN_TARGET_STYLE,
 				className,
 			)}

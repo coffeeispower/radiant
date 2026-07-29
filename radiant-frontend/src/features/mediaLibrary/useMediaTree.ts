@@ -267,13 +267,15 @@ export function useMediaTree(radioId: Radio.RadioId, treeAtom: Atom.Atom<Result.
 					}
 				}
 
-				if (nextIndex === currentIndex || nextIndex === -1) return prev
+			if (nextIndex === currentIndex || nextIndex === -1) return prev
 
-				const nextId = flatVisibleNodes[nextIndex].id
-				return {
-					...prev,
-					focusedId: nextId,
-				}
+			const nextId = flatVisibleNodes[nextIndex].id
+			return {
+				...prev,
+				focusedId: nextId,
+				selectedIds: new Set([nextId]),
+				lastSelectedId: nextId,
+			}
 			})
 		},
 		[flatVisibleNodes, treeNodes, expandedIds],

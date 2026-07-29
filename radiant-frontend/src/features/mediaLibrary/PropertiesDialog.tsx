@@ -13,7 +13,10 @@ import {
 	DialogTitle,
 } from "@/components/Dialog"
 import { Label } from "@/components/label"
+import { useRadioDashboard } from "@/pgs/radioDashboard/RadioManagementDashboardRoot"
 
+import { MusicFileIcon } from "./MediaLibraryIcons"
+import { useCoverArt } from "./useCoverArt"
 import { MediaTreeActions, MediaTreeState } from "./useMediaTree"
 
 interface PropertiesDialogProps {
@@ -50,14 +53,17 @@ function countAllDescendants(
 
 export function PropertiesDialog({ state, actions }: PropertiesDialogProps) {
 	const t = useTranslations()
+	const { radio } = useRadioDashboard()
 	const isOpen = state.pendingContextMenu?.kind === "properties"
 	const targetId = isOpen
 		? Array.from(state.pendingContextMenu?.targetIds ?? [])[0]
 		: undefined
 	const node = targetId ? state.findNodeById(targetId) : undefined
+	const coverArtUrl = useCoverArt(radio.id, node?.id ?? "" as MediaNode.MediaNodeId)
 
 	const handleClose = () => {
 		actions.dismissContextMenu()
+		document.querySelector<HTMLElement>('[role="tree"]')?.focus()
 	}
 
 	if (!node) {
@@ -90,6 +96,23 @@ export function PropertiesDialog({ state, actions }: PropertiesDialogProps) {
 					</DialogDescription>
 				</DialogHeader>
 				<div className="mt-4 space-y-3">
+					{node.kind === "audio_file" && (
+						<div className="flex justify-center">
+							<div className="relative aspect-square w-40 overflow-hidden border-3 border-neo-black bg-neo-paper shadow-neo-badge">
+								{coverArtUrl ? (
+									<img
+										src={coverArtUrl}
+										alt={node.name}
+										className="h-full w-full object-cover"
+									/>
+								) : (
+									<div className="flex h-full w-full items-center justify-center">
+										<MusicFileIcon className="h-12 w-12 text-black/20" />
+									</div>
+								)}
+							</div>
+						</div>
+					)}
 					<div>
 						<Label>{t("Name")}</Label>
 						<p className="mt-1 text-sm text-black/70">{node.name}</p>

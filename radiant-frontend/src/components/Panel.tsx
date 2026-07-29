@@ -14,7 +14,7 @@ export function Panel(
 	}>,
 ) {
 	return (
-		<Card className={cn("bg-white shadow-neo-panel-mobile", props.className)}>
+		<Card className={cn("bg-white shadow-neo-panel-mobile flex flex-col", props.className)}>
 			<CardHeader className="flex-row items-start justify-between gap-4 border-b-3 border-neo-black px-5 py-4 space-y-0">
 				<div>
 					{props.kicker ? (

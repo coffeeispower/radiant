@@ -16,15 +16,14 @@ interface FileRowProps {
  isSelected: boolean
  isFocused: boolean
  isRenaming: boolean
- isPendingMove: boolean
 	actions: MediaTreeActions
 }
 
-export function FileRow({ node, isSelected, isFocused, isRenaming, isPendingMove, actions }: FileRowProps) {
+export function FileRow({ node, isSelected, isFocused, isRenaming, actions }: FileRowProps) {
 	const inputRef = useRef<HTMLInputElement>(null)
 	const [renameValue, setRenameValue] = useState(node.name)
 
-	const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+	const { attributes: { tabIndex: _dragTabIndex, role: _dragRole, ...dragAttributes }, listeners, setNodeRef } = useDraggable({
 		id: node.id,
 		data: { node },
 	})
@@ -58,13 +57,11 @@ export function FileRow({ node, isSelected, isFocused, isRenaming, isPendingMove
 		<div
 			ref={setNodeRef}
 			{...listeners}
-			{...attributes}
+			{...dragAttributes}
 			style={treeIndentStyle(node.depth)}
 			className={cn(
-				"flex cursor-pointer select-none items-center gap-2 border-2 border-transparent px-2 py-1",
+				"flex cursor-pointer select-none items-center gap-2 border-2 border-transparent px-2 py-1 focus:outline-none",
 				groteskFont.className,
-				isPendingMove && "opacity-0",
-				!isPendingMove && isDragging && "opacity-50",
 				isSelected && "bg-signal-warm/30 border-signal-warm",
 				isFocused && !isSelected && "bg-surface-muted",
 				!isSelected && !isFocused && "hover:bg-surface-muted/50",

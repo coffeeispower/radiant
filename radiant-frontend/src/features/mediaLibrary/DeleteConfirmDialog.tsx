@@ -29,10 +29,12 @@ export function DeleteConfirmDialog({ state, actions }: DeleteConfirmDialogProps
 	const handleConfirm = async () => {
 		await actions.deleteNodesByIds(targetIds)
 		actions.dismissContextMenu()
+		document.querySelector<HTMLElement>('[role="tree"]')?.focus()
 	}
 
 	const handleCancel = () => {
 		actions.dismissContextMenu()
+		document.querySelector<HTMLElement>('[role="tree"]')?.focus()
 	}
 
 	return (

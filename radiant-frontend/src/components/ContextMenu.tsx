@@ -30,13 +30,15 @@ ContextMenuContent.displayName = ContextMenuPrimitive.Content.displayName
 const ContextMenuItem = React.forwardRef<
 	React.ElementRef<typeof ContextMenuPrimitive.Item>,
 	React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Item>
->(({ className, ...props }, ref) => (
+>(({ className, disabled, ...props }, ref) => (
 	<ContextMenuPrimitive.Item
 		ref={ref}
 		className={cn(
 			"relative flex cursor-default select-none items-center border-2 border-transparent px-3 py-2 text-sm font-bold outline-none focus:border-neo-black focus:bg-surface-muted",
+			disabled && "pointer-events-none opacity-40",
 			className,
 		)}
+		disabled={disabled}
 		{...props}
 	/>
 ))

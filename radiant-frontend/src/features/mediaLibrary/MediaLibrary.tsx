@@ -25,6 +25,7 @@ import { NewFolderIcon, UploadIcon } from "./MediaLibraryIcons"
 import { useMediaTree } from "./useMediaTree"
 import { MAX_NODE_NAME_LENGTH } from "./types"
 import { useRadioDashboard } from "@/pgs/radioDashboard/RadioManagementDashboardRoot"
+import { ScrollArea } from "@/components/ScrollArea"
 
 interface MediaLibraryProps {
 	className?: string
@@ -78,7 +79,8 @@ export function MediaLibrary({ className }: MediaLibraryProps) {
 	return (
 		<Panel
 			title={t("Media Library")}
-			className={cn("flex flex-col overflow-hidden", className)}
+			className={cn("flex flex-col h-full", className)}
+			contentClassName="flex-1 min-h-0 p-0"
 			headerActions={
 				<div className="flex gap-2">
 					<Button
@@ -108,13 +110,13 @@ export function MediaLibrary({ className }: MediaLibraryProps) {
 				className="hidden"
 				onChange={handleFileChange}
 			/>
+
 			<MediaLibraryTree
 				state={tree}
 				actions={tree}
 				onCreateFolder={openNewFolderDialog}
-				className="min-h-0 flex-1"
+				className="min-h-0 h-full"
 			/>
-
 			<Dialog open={isFolderDialogOpen} onOpenChange={setIsFolderDialogOpen}>
 				<DialogContent>
 					<form onSubmit={handleNewFolderSubmit}>

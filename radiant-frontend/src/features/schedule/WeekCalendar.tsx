@@ -1,6 +1,6 @@
 "use client"
 import { DateTime, Option } from "effect";
-import { useLayoutEffect, useMemo, useState } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Panel } from "@/components/Panel";
 import { ScrollArea } from "@/components/ScrollArea";
 import { Spinner } from "@/components/Spinner";
@@ -9,7 +9,7 @@ import { useTranslations } from "next-intl";
 import { useAtomValue, Result, useAtomRefresh } from "@effect-atom/atom-react";
 import { useRadioDashboard } from "@/pgs/radioDashboard/RadioManagementDashboardRoot";
 import { makeWeekInfo, type Time } from "./weekCalendarLayout";
-import { useElementSize } from "@/hooks/useElementSize";
+
 import { cn } from "@/utils/cn";
 import { TimeSpanGrid } from "./TimeSpanGrid";
 import { BlockOverlay } from "./BlockOverlay";
@@ -64,32 +64,15 @@ export function WeekCalendar({ className }: { className?: string }) {
 
 	const { gridRef, rowMeasurements, colMeasurements, measure: measureGrid } = useGridMeasurement();
 
-	const calendarViewportSize = useElementSize<HTMLDivElement>();
+	const scrollAreaRef = useRef<HTMLDivElement | null>(null);
 
-	const { setScrollAreaRef, zoomAnchorRef, gridRef: zoomGridRef } = useWeekCalendarZoom(
+	useWeekCalendarZoom(
 		pixelsPerMinute,
 		setPixelsPerMinute,
 		measureGrid,
-		(el) => { calendarViewportSize.setElement(el as HTMLDivElement); },
+		scrollAreaRef,
+		gridRef,
 	);
-
-	// Wire the zoom's gridRef to the measurement gridRef
-	if (zoomGridRef.current !== gridRef.current) {
-		zoomGridRef.current = gridRef.current;
-	}
-
-	useLayoutEffect(() => {
-		if (zoomAnchorRef.current) {
-			const { scrollTop, mouseY, headerHeight, oldPPM } = zoomAnchorRef.current;
-			const f = pixelsPerMinute / oldPPM;
-			const newScrollTop = f * scrollTop + (f - 1) * (mouseY - headerHeight);
-			const viewport = calendarViewportSize.ref.current;
-			if (viewport) {
-				viewport.scrollTop = Math.max(0, newScrollTop);
-			}
-			zoomAnchorRef.current = null;
-		}
-	}, [pixelsPerMinute]);
 
 	useLayoutEffect(() => {
 		measureGrid();
@@ -140,7 +123,7 @@ export function WeekCalendar({ className }: { className?: string }) {
 				onInitial: () => <ScheduleLoading />,
 				onFailure: () => <ScheduleError onRetry={refreshSchedule} />,
 				onSuccess: ({ value }) => (
-					<ScrollArea ref={setScrollAreaRef} className="h-full">
+					<ScrollArea ref={scrollAreaRef} className="h-full">
 						<div className="relative">
 							<TimeSpanGrid
 								week={weekInfo}

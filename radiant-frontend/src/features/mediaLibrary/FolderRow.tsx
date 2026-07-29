@@ -18,7 +18,6 @@ interface FolderRowProps {
 	isFocused: boolean
 	isRenaming: boolean
 	isDropTarget: boolean
-	isPendingMove: boolean
 	actions: MediaTreeActions
 }
 
@@ -29,12 +28,11 @@ export function FolderRow({
 	isFocused,
 	isRenaming,
 	isDropTarget,
-	isPendingMove,
 	actions,
 }: FolderRowProps) {
 	const inputRef = useRef<HTMLInputElement>(null)
 
-	const { attributes, listeners, setNodeRef: setDragNodeRef, isDragging } =
+	const { attributes: { tabIndex: _dragTabIndex, role: _dragRole, ...dragAttributes }, listeners, setNodeRef: setDragNodeRef } =
 		useDraggable({
 			id: node.id,
 			data: { node },
@@ -78,13 +76,11 @@ export function FolderRow({
 		<div
 			ref={setRefs}
 			{...listeners}
-			{...attributes}
+			{...dragAttributes}
 			style={treeIndentStyle(node.depth)}
 			className={cn(
-				"flex cursor-pointer select-none items-center gap-2 border-2 border-transparent px-2 py-1",
+				"flex cursor-pointer select-none items-center gap-2 border-2 border-transparent px-2 py-1 focus:outline-none",
 				groteskFont.className,
-				isPendingMove && "opacity-0",
-				!isPendingMove && isDragging && "opacity-50",
 				isDropTarget && "border-signal-warm",
 				isSelected && "bg-signal-warm/30 border-signal-warm",
 				isFocused && !isSelected && "bg-surface-muted",

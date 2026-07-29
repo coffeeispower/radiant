@@ -179,5 +179,13 @@ img {
 
 
 #__scrollAreaViewportPatch__ > div > div {
-	min-height: 100%;
+	display: flex !important;
+	flex-direction: column;
+	min-width: 100%;
+	height: 100%;
+}
+
+[data-radix-scroll-area-viewport]:has([role="tree"]:focus) {
+	outline: 2px solid var(--color-signal-warm);
+	outline-offset: -2px;
 }

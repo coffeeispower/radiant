@@ -43,16 +43,8 @@ export function MediaLibraryTree({ state, actions, onCreateFolder, className }: 
 	const [externalDropTargetId, setExternalDropTargetId] =
 		useState<MediaNode.MediaNodeId | null>(null)
 	const [draggedNode, setDraggedNode] = useState<VisibleNode | null>(null)
-	const [pendingMoveNodeId, setPendingMoveNodeId] = useState<MediaNode.MediaNodeId | null>(null)
 	const [mounted, setMounted] = useState(false)
 	useEffect(() => { setMounted(true) }, [])
-
-	// Clear pending move when tree data updates (server responded with new tree)
-	useEffect(() => {
-		if (pendingMoveNodeId !== null) {
-			setPendingMoveNodeId(null)
-		}
-	}, [state.flatVisibleNodes])
 
 	useEffect(() => {
 		const links: HTMLLinkElement[] = []
@@ -103,7 +95,6 @@ export function MediaLibraryTree({ state, actions, onCreateFolder, className }: 
 			}
 
 			if (draggedNode.id === targetParentId) return
-			setPendingMoveNodeId(draggedNode.id)
 			actions.moveNode(draggedNode.id, targetParentId)
 		},
 		[actions],
@@ -206,9 +197,19 @@ export function MediaLibraryTree({ state, actions, onCreateFolder, className }: 
 					break
 				case "Enter": {
 					event.preventDefault()
-					const focusedId = state.selection.focusedId
-					if (focusedId) {
-						actions.toggleExpand(focusedId)
+					if (event.altKey) {
+						const targetId = state.selection.focusedId ?? Array.from(state.selection.selectedIds)[0]
+						if (targetId) {
+							actions.requestContextMenu({
+								kind: "properties",
+								targetIds: new Set([targetId]),
+							})
+						}
+					} else {
+						const focusedId = state.selection.focusedId
+						if (focusedId) {
+							actions.toggleExpand(focusedId)
+						}
 					}
 					break
 				}
@@ -266,7 +267,7 @@ export function MediaLibraryTree({ state, actions, onCreateFolder, className }: 
 	return (
 		<div
 			ref={containerRef}
-			className={cn("relative flex-1 overflow-hidden", className)}
+			className={cn("relative h-full", className)}
 			onDragEnter={handleNativeDragEnter}
 			onDragOver={handleNativeDragOver}
 			onDragLeave={handleNativeDragLeave}
@@ -291,8 +292,11 @@ export function MediaLibraryTree({ state, actions, onCreateFolder, className }: 
 					<div
 						role="tree"
 						tabIndex={0}
-						className="outline-none"
+						className="flex-1 outline-none"
 						onKeyDown={handleKeyDown}
+						onClick={(e) => {
+							(e.currentTarget as HTMLElement).focus()
+						}}
 					>
 						{mounted && state.tree._tag === "Initial" && (
 							<div className="flex flex-col items-center justify-center py-12 text-center">
@@ -300,33 +304,32 @@ export function MediaLibraryTree({ state, actions, onCreateFolder, className }: 
 							</div>
 						)}
 
-						{state.flatVisibleNodes.map((node) => (
-							<div key={node.id} onPointerDown={(e) => handleContextMenuNode(node, e)}>
-								<TreeNode
-									node={node}
-									state={state}
-									actions={actions}
-									dropTargetId={externalDropTargetId}
-									isPendingMove={node.id === pendingMoveNodeId}
-								/>
-							</div>
-						))}
+					{state.flatVisibleNodes.map((node) => (
+						<div key={node.id} onPointerDown={(e) => handleContextMenuNode(node, e)}>
+							<TreeNode
+								node={node}
+								state={state}
+								actions={actions}
+								dropTargetId={externalDropTargetId}
+							/>
+						</div>
+					))}
 
-						{mounted && state.tree._tag !== "Initial" && state.flatVisibleNodes.length === 0 && !isDraggingExternal && (
-							<div className="flex flex-col items-center justify-center py-12 text-center">
-								<div className="mb-4 text-black/40">
-									<UploadIcon className="h-8 w-8" />
-								</div>
-								<p className="text-sm font-bold text-black/40">
-									{t("Drop audio files here or use Upload")}
-								</p>
+					{mounted && state.tree._tag !== "Initial" && state.flatVisibleNodes.length === 0 && !isDraggingExternal && (
+						<div className="flex flex-col items-center justify-center py-12 text-center">
+							<div className="mb-4 text-black/40">
+								<UploadIcon className="h-8 w-8" />
 							</div>
-						)}
-					</div>
-				</MediaLibraryContextMenu>
-			</ScrollArea>
+							<p className="text-sm font-bold text-black/40">
+								{t("Drop audio files here or use Upload")}
+							</p>
+						</div>
+					)}
+				</div>
+			</MediaLibraryContextMenu>
+		</ScrollArea>
 
-			<DragOverlay>
+		<DragOverlay dropAnimation={{ duration: 0 }}>
 				{draggedNode ? (
 					<div className="flex items-center gap-2 border-2 border-neo-black bg-white px-2 py-1 opacity-80 shadow-neo-badge">
 						{draggedNode.kind === "folder" ? (

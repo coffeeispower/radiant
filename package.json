@@ -9,7 +9,6 @@
 		"radiant-cli"
 	],
 	"scripts": {
-		// "prepare": "./scripts/prepare-effect.sh",
 		"add-test-migration": "bun --env-file=radiant-frontend/.env --bun drizzle-kit generate --config backend/drizzle.config.ts",
 		"db:push": "bun --env-file=radiant-frontend/.env --bun drizzle-kit push --config backend/drizzle.config.ts",
 		"build": "cd radiant-frontend && npm run build",
