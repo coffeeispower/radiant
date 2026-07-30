@@ -1,36 +1,56 @@
-import { useCallback, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
-/** Tracks row and column pixel measurements for a CSS grid, queried via
- *  `data-time-span` (rows) and `data-day-col` (columns) attributes.
- *
- *  Attach `gridRef` to the grid container, then call `measure()` after any
- *  layout change (zoom, resize) to refresh the measurements. */
-export function useGridMeasurement() {
+export function useGridMeasurement(tickCount: number, rowHeight: number) {
 	const gridRef = useRef<HTMLDivElement>(null);
-	const [rowMeasurements, setRowMeasurements] = useState<ReadonlyArray<{ top: number; height: number }>>([]);
-	const [colMeasurements, setColMeasurements] = useState<ReadonlyArray<{ left: number; width: number }>>([]);
-
-	const measure = useCallback(() => {
-		if (!gridRef.current) return;
-		const timeSpanEls = gridRef.current.querySelectorAll<HTMLElement>("[data-time-span]");
-		const dayColEls = gridRef.current.querySelectorAll<HTMLElement>("[data-day-col]");
-
-		const rows = Array.from(timeSpanEls).map((el) => ({ top: el.offsetTop, height: el.offsetHeight }));
-		const cols = Array.from(dayColEls).map((el) => ({ left: el.offsetLeft, width: el.offsetWidth }));
-
-		setRowMeasurements((prev) => {
-			if (prev.length === rows.length && prev.every((r, i) => r.top === rows[i]!.top && r.height === rows[i]!.height)) return prev;
-			return rows;
-		});
-		setColMeasurements((prev) => {
-			if (prev.length === cols.length && prev.every((c, i) => c.left === cols[i]!.left && c.width === cols[i]!.width)) return prev;
-			return cols;
-		});
-	}, []);
+	const [headerHeight, setHeaderHeight] = useState(0);
+	const [colLeft, setColLeft] = useState(0);
+	const [colWidth, setColWidth] = useState(0);
 
 	useLayoutEffect(() => {
-		measure();
-	}, [measure]);
+		const grid = gridRef.current;
+		if (!grid) return;
+		const headerEl = grid.firstElementChild;
+		setHeaderHeight(headerEl instanceof HTMLElement ? headerEl.offsetHeight : 0);
+		const firstCol = grid.querySelector<HTMLElement>("[data-day-col='0']");
+		if (firstCol) {
+			setColLeft(firstCol.offsetLeft);
+			setColWidth(firstCol.offsetWidth);
+		}
+	}, []);
+
+	useEffect(() => {
+		const handleResize = () => {
+			const grid = gridRef.current;
+			if (!grid) return;
+			const headerEl = grid.firstElementChild;
+			setHeaderHeight(headerEl instanceof HTMLElement ? headerEl.offsetHeight : 0);
+			const firstCol = grid.querySelector<HTMLElement>("[data-day-col='0']");
+			if (firstCol) {
+				setColLeft(firstCol.offsetLeft);
+				setColWidth(firstCol.offsetWidth);
+			}
+		};
+		window.addEventListener("resize", handleResize);
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
+
+	const rowMeasurements = useMemo(() => {
+		if (headerHeight === 0) return [];
+		return Array.from({ length: tickCount }, (_, i) => ({
+			top: headerHeight + i * rowHeight,
+			height: rowHeight,
+		}));
+	}, [tickCount, rowHeight, headerHeight]);
+
+	const colMeasurements = useMemo(() => {
+		if (colLeft === 0) return [];
+		return Array.from({ length: 7 }, (_, i) => ({
+			left: colLeft + i * colWidth,
+			width: colWidth,
+		}));
+	}, [colLeft, colWidth]);
+
+	const measure = useCallback(() => {}, []);
 
 	return { gridRef, rowMeasurements, colMeasurements, measure } as const;
 }

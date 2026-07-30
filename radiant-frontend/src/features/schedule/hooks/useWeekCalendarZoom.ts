@@ -149,7 +149,7 @@ export function useWeekCalendarZoom(
 			abort.abort();
 			viewportRef.current = null;
 		};
-	});
+	}, []);
 
 	const pinchState = useRef<{
 		scrollTop: number;

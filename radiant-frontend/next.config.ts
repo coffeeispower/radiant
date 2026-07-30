@@ -6,7 +6,8 @@ const nextConfig: NextConfig = {
 	transpilePackages: ["@radiant/backend", "@radiant/client"],
 	compiler: {
 		styledComponents: true
-	}
+	},
+	devIndicators: false
 }
 
 const withNextIntl = createNextIntlPlugin({

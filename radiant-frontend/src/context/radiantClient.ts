@@ -144,3 +144,9 @@ export function useMediaLibraryMutations(radioId: Radio.RadioId) {
 
 export type MediaLibraryMutations = ReturnType<typeof useMediaLibraryMutations>;
 export type MediaLibraryTreeAtom = ReturnType<typeof useMediaLibraryTreeAtom>;
+
+export function scheduleBlocksReactivityKey(radioId: Radio.RadioId): string {
+	return `radio:${radioId}:schedule:listBlocks`
+}
+
+export const createBlockAtom = RadiantAtomClient.mutation("scheduleBlocks", "createBlock")

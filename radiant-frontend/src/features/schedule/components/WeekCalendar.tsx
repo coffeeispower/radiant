@@ -62,21 +62,7 @@ export function WeekCalendar({ className }: { className?: string }) {
 		return result
 	}, [weekInfo.weekStart]);
 
-	const { gridRef, rowMeasurements, colMeasurements, measure: measureGrid } = useGridMeasurement();
-
 	const scrollAreaRef = useRef<HTMLDivElement | null>(null);
-
-	useWeekCalendarZoom(
-		pixelsPerMinute,
-		setPixelsPerMinute,
-		measureGrid,
-		scrollAreaRef,
-		gridRef,
-	);
-
-	useLayoutEffect(() => {
-		measureGrid();
-	}, [pixelsPerMinute, measureGrid]);
 
 	/** Number of hours to display per day column. Normally 24, but during DST
 	 *  transitions it can be 25 (fall back: hour repeats) or 23 (spring forward:
@@ -91,8 +77,18 @@ export function WeekCalendar({ className }: { className?: string }) {
 	const rowHeight = pixelsPerMinute * spanDurationMinutes;
 	const zoomPercent = Math.round((pixelsPerMinute / DEFAULT_PIXELS_PER_MINUTE) * 100);
 
+	const { gridRef, rowMeasurements, colMeasurements, measure: measureGrid } = useGridMeasurement(tickCount, rowHeight);
+
 	const zoomIn = () => setPixelsPerMinute((prev) => Math.min(MAX_PIXELS_PER_MINUTE, prev * ZOOM_FACTOR));
 	const zoomOut = () => setPixelsPerMinute((prev) => Math.max(MIN_PIXELS_PER_MINUTE, prev / ZOOM_FACTOR));
+
+	useWeekCalendarZoom(
+		pixelsPerMinute,
+		setPixelsPerMinute,
+		measureGrid,
+		scrollAreaRef,
+		gridRef,
+	);
 
 	return (
 		<Panel
@@ -124,12 +120,11 @@ export function WeekCalendar({ className }: { className?: string }) {
 				onFailure: () => <ScheduleError onRetry={refreshSchedule} />,
 				onSuccess: ({ value }) => (
 					<ScrollArea ref={scrollAreaRef} className="h-full">
-						<div className="relative">
+						<div className="relative" style={{ "--grid-row-height": `${rowHeight}px` } as React.CSSProperties}>
 							<TimeSpanGrid
 								week={weekInfo}
 								displayDayDuration={displayDayDuration}
 								tickCount={tickCount}
-								rowHeight={rowHeight}
 								days={days}
 								gridRef={gridRef}
 							/>

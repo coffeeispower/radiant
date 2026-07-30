@@ -1,7 +1,7 @@
 "use client"
 
-import { DateTime, Duration, Option } from "effect"
-import { JSX } from "react"
+import { DateTime, Option } from "effect"
+import { memo, JSX } from "react"
 import { type WeekInfo, type Time } from "../utils/weekCalendarLayout"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/Tooltip"
 import { useTranslations } from "next-intl"
@@ -14,7 +14,6 @@ type TimeSpanGridProps = {
 	readonly week: WeekInfo
 	readonly displayDayDuration: number
 	readonly tickCount: number
-	readonly rowHeight: number
 	readonly days: ReadonlyArray<{ date: Time; dayIndex: number }>
 	readonly gridRef: React.RefObject<HTMLDivElement | null>
 }
@@ -26,27 +25,27 @@ function formatDayDate(date: Time): string {
 	return `${day}/${month}`
 }
 
-export function TimeSpanGrid(props: TimeSpanGridProps): JSX.Element {
-	const { week, displayDayDuration, tickCount, rowHeight, days, gridRef } = props
+export const TimeSpanGrid = memo(function TimeSpanGrid(props: TimeSpanGridProps): JSX.Element {
+	const { week, displayDayDuration, tickCount, days, gridRef } = props
 	const t = useTranslations()
 
-	const skipHour = week.dstSkipPoint.pipe(Option.map(({ point }) => {
+	const skipHourMin = Option.map(week.dstSkipPoint, ({ point }) => {
 		const { hours, minutes } = DateTime.toParts(point)
-		return Duration.decode(`${hours} hours`).pipe(Duration.sum(`${minutes} minutes`))
-	}))
+		return hours * 60 + minutes
+	})
 
 	const spanDuration = displayDayDuration / tickCount
 
 	let showedDstHint = false
 	const rows: JSX.Element[] = []
+	const dstExtra = displayDayDuration - 24
 
 	for (let i = 0; i < tickCount; i++) {
-		const durationMinutes = i * spanDuration * 60
-		const hours = Math.floor(durationMinutes / 60)
-		const minutes = Math.round(durationMinutes % 60)
+		const totalMinutes = i * spanDuration * 60
+		const hours = Math.floor(totalMinutes / 60)
+		const minutes = Math.round(totalMinutes % 60)
 
-		const duration = Duration.decode(`${hours} hours`).pipe(Duration.sum(`${minutes} minutes`))
-		const displayOffset = Option.isSome(skipHour) && Duration.greaterThan(duration, skipHour.value) ? (displayDayDuration - 24) : 0
+		const displayOffset = Option.isSome(skipHourMin) && totalMinutes > skipHourMin.value ? dstExtra : 0
 		const isDstBoundary = !showedDstHint && displayOffset !== 0
 		if (isDstBoundary) showedDstHint = true
 
@@ -58,7 +57,6 @@ export function TimeSpanGrid(props: TimeSpanGridProps): JSX.Element {
 
 		rows.push(
 			<div key={`time-${i}`} data-time-span={i}
-				style={{ height: rowHeight }}
 				className="flex items-start justify-end pr-2 pt-0.5 font-mono text-[0.65rem] font-bold text-neo-black/60 border-b-2 border-b-neo-black/20 border-r-2 border-r-neo-black/20 bg-neo-paper"
 			>
 				{isDstBoundary && (
@@ -78,7 +76,6 @@ export function TimeSpanGrid(props: TimeSpanGridProps): JSX.Element {
 		for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
 			rows.push(
 				<div key={`cell-${i}-${dayIndex}`}
-					style={{ height: rowHeight }}
 					className="border-b-2 border-b-neo-black/20 border-r border-r-neo-black/10 last:border-r-0 bg-neo-paper"
 				/>
 			)
@@ -91,14 +88,14 @@ export function TimeSpanGrid(props: TimeSpanGridProps): JSX.Element {
 			style={{
 				display: "grid",
 				gridTemplateColumns: `${TICK_LABEL_WIDTH} repeat(7, 1fr)`,
-				gridTemplateRows: `auto repeat(${tickCount}, ${rowHeight}px)`,
+				gridTemplateRows: `auto repeat(${tickCount}, var(--grid-row-height))`,
 			}}
 			className="w-full"
 		>
 			<div className="sticky top-0 z-20 border-b-3 border-b-neo-black border-r-3 border-r-neo-black bg-neo-paper shadow-neo-down shadow-black/20" />
 			{days.map((day, i) => (
 				<div key={i} data-day-col={i}
-					className="sticky top-0 z-20 flex flex-col items-center justify-center py-1.5 border-b-3 border-b-neo-black border-r-3 border-r-neo-black last:border-r-0 bg-neo-paper shadow-neo-down shadow-black/20 relative"
+					className="sticky top-0 z-20 flex flex-col items-center justify-center py-1.5 border-b-3 border-b-neo-black border-r-3 border-r-neo-black last:border-r-0 bg-neo-paper shadow-neo-down shadow-black/20"
 				>
 					<span className={`text-[0.65rem] font-bold text-neo-black uppercase tracking-micro leading-none ${tomorrowFont.className}`}>
 						{t(WEEKDAY_KEYS[i])}
@@ -112,4 +109,4 @@ export function TimeSpanGrid(props: TimeSpanGridProps): JSX.Element {
 			{rows}
 		</div>
 	)
-}
+})

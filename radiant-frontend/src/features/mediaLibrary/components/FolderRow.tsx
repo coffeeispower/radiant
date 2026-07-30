@@ -1,8 +1,6 @@
 "use client"
 
-import { useDraggable, useDroppable } from "@dnd-kit/core"
-import { MediaNode } from "@radiant/client"
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 
 import { groteskFont } from "@/lib/fonts"
 import { cn } from "@/utils/cn"
@@ -32,22 +30,6 @@ export function FolderRow({
 }: FolderRowProps) {
 	const inputRef = useRef<HTMLInputElement>(null)
 
-	const { attributes: { tabIndex: _dragTabIndex, role: _dragRole, ...dragAttributes }, listeners, setNodeRef: setDragNodeRef } =
-		useDraggable({
-			id: node.id,
-			data: { node },
-		})
-
-	const { setNodeRef: setDropNodeRef } = useDroppable({
-		id: `drop-${node.id}`,
-		data: { node, type: "folder" },
-	})
-
-	const setRefs = (el: HTMLElement | null) => {
-		setDragNodeRef(el)
-		setDropNodeRef(el)
-	}
-
 	useEffect(() => {
 		if (isRenaming) {
 			inputRef.current!.value = node.name;
@@ -74,9 +56,6 @@ export function FolderRow({
 
 	return (
 		<div
-			ref={setRefs}
-			{...listeners}
-			{...dragAttributes}
 			style={treeIndentStyle(node.depth)}
 			className={cn(
 				"flex cursor-pointer select-none items-center gap-2 border-2 border-transparent px-2 py-1 focus:outline-none",

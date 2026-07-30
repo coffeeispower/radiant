@@ -75,8 +75,8 @@ export function RadioManagementDashboardRoot(props: PropsWithoutRef<{initialRadi
 	return (
 		<RadioDashboardContext.Provider value={value}>
 			<GridLayout>
-				<WeekCalendar className="[grid-area:A] bg-surface"/>
-				<MediaLibrary className="[grid-area:B]"/>
+			<WeekCalendar className="[grid-area:A] bg-surface"/>
+			<MediaLibrary className="[grid-area:B]"/>
 			</GridLayout>
 		</RadioDashboardContext.Provider>
 	);

@@ -1,6 +1,5 @@
 "use client"
 
-import { useDraggable } from "@dnd-kit/core"
 import { MediaNode } from "@radiant/client"
 import { useLayoutEffect, useRef, useState } from "react"
 
@@ -22,11 +21,6 @@ interface FileRowProps {
 export function FileRow({ node, isSelected, isFocused, isRenaming, actions }: FileRowProps) {
 	const inputRef = useRef<HTMLInputElement>(null)
 	const [renameValue, setRenameValue] = useState(node.name)
-
-	const { attributes: { tabIndex: _dragTabIndex, role: _dragRole, ...dragAttributes }, listeners, setNodeRef } = useDraggable({
-		id: node.id,
-		data: { node },
-	})
 
 	useLayoutEffect(() => {
 		if (isRenaming) {
@@ -55,9 +49,6 @@ export function FileRow({ node, isSelected, isFocused, isRenaming, actions }: Fi
 
 	return (
 		<div
-			ref={setNodeRef}
-			{...listeners}
-			{...dragAttributes}
 			style={treeIndentStyle(node.depth)}
 			className={cn(
 				"flex cursor-pointer select-none items-center gap-2 border-2 border-transparent px-2 py-1 focus:outline-none",

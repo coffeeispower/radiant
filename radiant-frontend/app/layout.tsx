@@ -6,6 +6,7 @@ import { RadiantAtomsProvider } from "@/context/RadiantAtomsProvider"
 import { groteskFont } from "@/lib/fonts"
 import { isLocale } from "@/lib/i18n"
 import StyledComponentsRegistry from "@/lib/styledComponentsRegistry"
+import { ReactScan } from "@/lib/ReactScan"
 
 export const metadata: Metadata = {
 	title: "Radiant",
@@ -23,6 +24,7 @@ export default async function RootLayout({
 	return (
 		<html className={`${groteskFont.variable} h-full antialiased`}>
 			<body className="min-h-full flex flex-col">
+				<ReactScan />
 				<StyledComponentsRegistry>
 					<NextIntlClientProvider messages={messages}>
 						<RadiantAtomsProvider>

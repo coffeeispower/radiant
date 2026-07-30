@@ -1,15 +1,5 @@
 "use client"
 
-import {
-	closestCenter,
-	DndContext,
-	DragEndEvent,
-	DragOverlay,
-	DragStartEvent,
-	PointerSensor,
-	useSensor,
-	useSensors,
-} from "@dnd-kit/core"
 import { Result } from "@effect-atom/atom-react"
 import { MediaNode } from "@radiant/client"
 import { useTranslations } from "next-intl"
@@ -21,7 +11,7 @@ import { Spinner } from "@/components/Spinner"
 import { cn } from "@/utils/cn"
 
 import { MediaLibraryContextMenu } from "./MediaLibraryContextMenu"
-import { ClosedFolderIcon, MusicFileIcon, OpenFolderIcon, UploadIcon } from "./MediaLibraryIcons"
+import { UploadIcon } from "./MediaLibraryIcons"
 import closedFolderSvg from "@/assets/icons/closed_folder.svg"
 import openFolderSvg from "@/assets/icons/open_folder.svg"
 import musicFileIconSvg from "@/assets/icons/music_file_icon.svg"
@@ -42,7 +32,6 @@ export function MediaLibraryTree({ state, actions, onCreateFolder, className }: 
 	const [isDraggingExternal, setIsDraggingExternal] = useState(false)
 	const [externalDropTargetId, setExternalDropTargetId] =
 		useState<MediaNode.MediaNodeId | null>(null)
-	const [draggedNode, setDraggedNode] = useState<VisibleNode | null>(null)
 	const [mounted, setMounted] = useState(false)
 	useEffect(() => { setMounted(true) }, [])
 
@@ -59,49 +48,6 @@ export function MediaLibraryTree({ state, actions, onCreateFolder, className }: 
 		return () => {
 			for (const link of links) link.remove()
 		}
-	}, [])
-
-	const sensors = useSensors(
-		useSensor(PointerSensor, {
-			activationConstraint: {
-				distance: 5,
-			},
-		}),
-	)
-
-	const handleDragStart = useCallback(
-		(event: DragStartEvent) => {
-			const node = event.active.data.current?.node as VisibleNode | undefined
-			if (node) {
-				setDraggedNode(node)
-			}
-		},
-		[],
-	)
-
-	const handleDragEnd = useCallback(
-		(event: DragEndEvent) => {
-			setDraggedNode(null)
-			const { active, over } = event
-			if (!over) return
-
-			const draggedNode = active.data.current?.node as VisibleNode | undefined
-			if (!draggedNode) return
-
-			let targetParentId: MediaNode.MediaNodeId | null = null
-			const overData = over.data.current
-			if (overData?.type === "folder") {
-				targetParentId = (overData.node as VisibleNode).id
-			}
-
-			if (draggedNode.id === targetParentId) return
-			actions.moveNode(draggedNode.id, targetParentId)
-		},
-		[actions],
-	)
-
-	const handleDragCancel = useCallback(() => {
-		setDraggedNode(null)
 	}, [])
 
 	const handleNativeDragEnter = useCallback(
@@ -273,13 +219,6 @@ export function MediaLibraryTree({ state, actions, onCreateFolder, className }: 
 			onDragLeave={handleNativeDragLeave}
 			onDrop={handleNativeDrop}
 		>
-			<DndContext
-				sensors={sensors}
-				collisionDetection={closestCenter}
-				onDragStart={handleDragStart}
-				onDragEnd={handleDragEnd}
-				onDragCancel={handleDragCancel}
-			>
 			<ScrollArea
 				className="h-full"
 			>
@@ -328,20 +267,6 @@ export function MediaLibraryTree({ state, actions, onCreateFolder, className }: 
 				</div>
 			</MediaLibraryContextMenu>
 		</ScrollArea>
-
-		<DragOverlay dropAnimation={{ duration: 0 }}>
-				{draggedNode ? (
-					<div className="flex items-center gap-2 border-2 border-neo-black bg-white px-2 py-1 opacity-80 shadow-neo-badge">
-						{draggedNode.kind === "folder" ? (
-							<ClosedFolderIcon className="h-4 w-4 shrink-0" />
-						) : (
-							<MusicFileIcon className="h-5 w-4 shrink-0" />
-						)}
-						<span className="text-sm font-bold">{draggedNode.name}</span>
-					</div>
-				) : null}
-			</DragOverlay>
-			</DndContext>
 
 			{isDraggingExternal && (
 				<div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center border-4 border-dashed border-signal-warm bg-signal-warm/10">

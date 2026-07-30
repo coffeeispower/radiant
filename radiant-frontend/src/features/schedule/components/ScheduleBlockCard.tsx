@@ -4,7 +4,6 @@ import { useTranslations } from "next-intl"
 import { cn } from "@/utils/cn"
 import { Schedule } from "@radiant/client"
 import { useMediaNodeNameById } from "@/features/mediaLibrary/hooks/useMediaNodeNameById"
-import styled from "styled-components"
 import { useEffect, useState } from "react"
 
 type BlockLike = {
@@ -19,19 +18,6 @@ const targetTypeStyles: Record<Schedule.ScheduleTarget["targetType"], string> = 
 const UNKNOWN_TARGET_STYLE = "bg-neutral-200"
 
 const MIN_HEIGHT_FOR_ALWAYS_VISIBLE_TEXT = 30
-
-const SizedDiv = styled.div<{ $height: number }>`
-	interpolate-size: allow-keywords;
-	height: ${({ $height }) => $height}px;
-	&:hover {
-
-		/**
-			* calc-size is an experimental feature but it is the cleanest way to make the block not contract when hovered when the
-		  * height is bigger than the actual content
-		*/
-		height: calc-size(fit-content, max(size, ${({ $height }) => $height}px));
-	}
-`;
 
 export function ScheduleBlockCard(props: {
 	block: BlockLike
@@ -58,13 +44,12 @@ export function ScheduleBlockCard(props: {
 	// ------ END OF HACK -------
 
 	return (
-		<SizedDiv
-			$height={height}
-			style={style}
+		<div
+			style={{ ...style, "--block-h": `${height}px`, interpolateSize: "allow-keywords" } as React.CSSProperties}
 			className={cn(
 				"absolute left-2 right-2 border-3 border-neo-black shadow-neo-badge cursor-default select-none",
-				"duration-150 ease-out",
-				"hover:z-50 group",
+				"group",
+				"h-(--block-h) hover:h-[calc-size(fit-content,max(size,var(--block-h)))]",
 				showTransition ? "transition-[height]" : "transition-none",
 				targetTypeStyles[block.target.targetType] ?? UNKNOWN_TARGET_STYLE,
 				className,
@@ -81,6 +66,6 @@ export function ScheduleBlockCard(props: {
 					</span>
 				)}
 			</div>
-		</SizedDiv>
+		</div>
 	)
 }

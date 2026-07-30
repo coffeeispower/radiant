@@ -9,9 +9,6 @@
 		"typecheck": "bunx next typegen . && bunx tsc --noEmit -p tsconfig.json"
 	},
 	"dependencies": {
-		"@dnd-kit/core": "^6.3.1",
-		"@dnd-kit/sortable": "^10.0.0",
-		"@dnd-kit/utilities": "^3.2.2",
 		"@effect-atom/atom-react": "^0.5.0",
 		"@effect/platform": "^0.94.5",
 		"@radiant/backend": "workspace:*",
@@ -36,6 +33,7 @@
 		"next-intl": "^4.12.0",
 		"react": "19.2.4",
 		"react-dom": "19.2.4",
+		"react-scan": "^0.5.7",
 		"styled-components": "^6.4.4",
 		"tailwind-merge": "^3.6.0"
 	},
