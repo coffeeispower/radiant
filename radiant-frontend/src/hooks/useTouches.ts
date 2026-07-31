@@ -45,6 +45,14 @@ export function useTouches(ref: React.RefObject<HTMLElement | null>, onTouchUpda
 				onTouchUpdate(touchesMap.current, touch.identifier, false);
 			}
 		}, {signal});
+		ref.current.addEventListener("touchcancel", (e) => {
+			for (const touch of e.changedTouches) {
+				touchesMap.current.delete(touch.identifier);
+			}
+			for (const touch of e.changedTouches) {
+				onTouchUpdate(touchesMap.current, touch.identifier, false);
+			}
+		}, {signal});
 		return () => abortController.abort();
 	});
 }
